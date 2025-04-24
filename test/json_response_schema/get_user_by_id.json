@@ -1,0 +1,35 @@
+{
+    "type": "object",
+    "properties": {
+        "response_code": {
+            "type": "number"
+        },
+        "response_message": {
+            "type": "string"
+        },
+        "data": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id",
+                "name",
+                "email"
+            ]
+        }
+    },
+    "required": [
+        "response_code",
+        "response_message",
+        "data"
+    ]
+}
