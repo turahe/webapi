@@ -6,7 +6,7 @@ import (
 	_ "time/tzdata"
 
 	"github.com/go-co-op/gocron"
-	"github.com/kondohiroki/go-boilerplate/config"
+	"github.com/turahe/interpesona-data/config"
 )
 
 var Timezone = time.Now().Location()
@@ -39,8 +39,8 @@ func Start() {
 				}, func() {
 					time.Sleep(1 * time.Second)
 
-					// Print next run time in both utc and asia/bangkok
-					asiaBangkok, _ := time.LoadLocation("Asia/Bangkok")
+					// Print next run time in both utc and asia/jakarta timezone
+					asiaBangkok, _ := time.LoadLocation("Asia/Jakarta")
 					fmt.Printf("\nNext run: %s / %s\n", task.NextRun().UTC().String(), task.NextRun().In(asiaBangkok).String())
 
 				})

@@ -9,11 +9,11 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/kondohiroki/go-boilerplate/config"
-	"github.com/kondohiroki/go-boilerplate/internal/interface/validation"
-	"github.com/kondohiroki/go-boilerplate/internal/logger"
-	"github.com/kondohiroki/go-boilerplate/internal/router"
 	"github.com/spf13/cobra"
+	"github.com/turahe/interpesona-data/config"
+	"github.com/turahe/interpesona-data/internal/interface/validation"
+	"github.com/turahe/interpesona-data/internal/logger"
+	"github.com/turahe/interpesona-data/internal/router"
 )
 
 func init() {

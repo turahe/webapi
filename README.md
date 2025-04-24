@@ -1,6 +1,4 @@
 # go-boilerplate :rocket:
-[![Go Report Card](https://goreportcard.com/badge/github.com/kondohiroki/go-boilerplate)](https://goreportcard.com/report/github.com/kondohiroki/go-boilerplate)
-[![Go with Confidence](https://github.com/kondohiroki/go-boilerplate/actions/workflows/go_with_confidence.yml/badge.svg)](https://github.com/kondohiroki/go-boilerplate/actions/workflows/go_with_confidence.yml)
 
 This boilerplate is intended to be used as a starting point for a go application. It is not intended to be used as a but it is can be.
 
@@ -20,7 +18,7 @@ This boilerplate is intended to be used as a starting point for a go application
 ### Installation
 1. Clone the repo
    ```sh
-   git clone https://github.com/kondohiroki/go-boilerplate.git
+   git clone https://github.com/turahe/interpesona-data.git
     ```
 2. Install Go dependencies
     ```sh

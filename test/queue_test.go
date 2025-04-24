@@ -12,10 +12,10 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/kondohiroki/go-boilerplate/internal/db/model"
-	"github.com/kondohiroki/go-boilerplate/internal/db/rdb"
-	"github.com/kondohiroki/go-boilerplate/internal/helper/queue"
-	"github.com/kondohiroki/go-boilerplate/internal/job"
+	"github.com/turahe/interpesona-data/internal/db/model"
+	"github.com/turahe/interpesona-data/internal/db/rdb"
+	"github.com/turahe/interpesona-data/internal/helper/queue"
+	"github.com/turahe/interpesona-data/internal/job"
 )
 
 func TestQueue(t *testing.T) {
@@ -159,7 +159,7 @@ func TestQueue(t *testing.T) {
 	faildJobPayload, _ := sonic.Marshal(map[string]any{
 		"test": "test",
 	})
-	_, err = repo.Job.AddFailedJob(ctx, model.FaildJob{
+	_, err = repo.Job.AddFailedJob(ctx, model.FailedJob{
 		JobID:    uuid.New(),
 		Queue:    "testing",
 		Payload:  faildJobPayload,

@@ -4,16 +4,16 @@ import (
 	"log"
 	"os"
 
-	"github.com/kondohiroki/go-boilerplate/cmd"
-	"github.com/kondohiroki/go-boilerplate/internal/db/pgx"
-	"github.com/kondohiroki/go-boilerplate/internal/logger"
+	"github.com/turahe/interpesona-data/cmd"
+	"github.com/turahe/interpesona-data/internal/db/pgx"
+	"github.com/turahe/interpesona-data/internal/logger"
 
 	"go.uber.org/automaxprocs/maxprocs"
 )
 
 func main() {
 	defer func() {
-		_ = os.Remove("/tmp/live")
+		_ = os.Remove("tmp/live")
 
 		// Close the database connection pool
 		pgx.ClosePgxPool()
@@ -25,7 +25,7 @@ func main() {
 	}()
 
 	// Liveness probe for Kubernetes
-	_, err := os.Create("/tmp/live")
+	_, err := os.Create("tmp/live")
 	if err != nil {
 		log.Fatalf("Cannot create a Liveness file: %v", err)
 	}

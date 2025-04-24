@@ -8,12 +8,12 @@ import (
 
 	"github.com/gavv/httpexpect/v2"
 	"github.com/gofiber/fiber/v2"
-	"github.com/kondohiroki/go-boilerplate/config"
-	"github.com/kondohiroki/go-boilerplate/internal/db/pgx"
-	"github.com/kondohiroki/go-boilerplate/internal/db/rdb"
-	"github.com/kondohiroki/go-boilerplate/internal/logger"
-	"github.com/kondohiroki/go-boilerplate/internal/repository"
-	"github.com/kondohiroki/go-boilerplate/internal/router"
+	"github.com/turahe/interpesona-data/config"
+	"github.com/turahe/interpesona-data/internal/db/pgx"
+	"github.com/turahe/interpesona-data/internal/db/rdb"
+	"github.com/turahe/interpesona-data/internal/logger"
+	"github.com/turahe/interpesona-data/internal/repository"
+	"github.com/turahe/interpesona-data/internal/router"
 	"github.com/valyala/fasthttp"
 )
 

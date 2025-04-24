@@ -3,7 +3,7 @@ package migrations
 import (
 	"context"
 
-	"github.com/kondohiroki/go-boilerplate/internal/db/pgx"
+	"github.com/turahe/interpesona-data/internal/db/pgx"
 )
 
 func init() {

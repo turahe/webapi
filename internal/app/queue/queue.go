@@ -3,8 +3,8 @@ package queue
 import (
 	"context"
 
-	"github.com/kondohiroki/go-boilerplate/internal/helper/queue"
-	"github.com/kondohiroki/go-boilerplate/internal/repository"
+	"github.com/turahe/interpesona-data/internal/helper/queue"
+	"github.com/turahe/interpesona-data/internal/repository"
 )
 
 type QueueApp interface {

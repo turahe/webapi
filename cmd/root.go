@@ -8,11 +8,11 @@ import (
 	"time"
 
 	"github.com/getsentry/sentry-go"
-	"github.com/kondohiroki/go-boilerplate/config"
-	"github.com/kondohiroki/go-boilerplate/internal/db/pgx"
-	"github.com/kondohiroki/go-boilerplate/internal/db/rdb"
-	"github.com/kondohiroki/go-boilerplate/internal/logger"
 	"github.com/spf13/cobra"
+	"github.com/turahe/interpesona-data/config"
+	"github.com/turahe/interpesona-data/internal/db/pgx"
+	"github.com/turahe/interpesona-data/internal/db/rdb"
+	"github.com/turahe/interpesona-data/internal/logger"
 	"go.uber.org/zap"
 )
 
@@ -134,11 +134,11 @@ func setUpSentry() {
 	})
 
 	if err != nil {
-		logger.Log.Error("Creata Sentry instant error: %v", zap.Error(err))
+		logger.Log.Error("Create Sentry instant error: %v", zap.Error(err))
 		return
 	}
 
-	logger.Log.Info("Creata Sentry instant success")
+	logger.Log.Info("Create Sentry instant success")
 
 	// send initial event to sentry with data
 	sentry.CaptureMessage("Sentry initialized")

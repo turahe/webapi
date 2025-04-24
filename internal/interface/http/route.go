@@ -2,14 +2,14 @@ package httpapi
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/kondohiroki/go-boilerplate/internal/app/queue"
-	"github.com/kondohiroki/go-boilerplate/internal/app/user"
-	"github.com/kondohiroki/go-boilerplate/internal/repository"
+	"github.com/turahe/interpesona-data/internal/app/queue"
+	"github.com/turahe/interpesona-data/internal/app/user"
+	"github.com/turahe/interpesona-data/internal/repository"
 
-	httpHealthz "github.com/kondohiroki/go-boilerplate/internal/interface/http/healthz"
-	httpMiscellaneous "github.com/kondohiroki/go-boilerplate/internal/interface/http/miscellaneous"
-	httpQueue "github.com/kondohiroki/go-boilerplate/internal/interface/http/queue"
-	httpUser "github.com/kondohiroki/go-boilerplate/internal/interface/http/user"
+	httpHealthz "github.com/turahe/interpesona-data/internal/interface/http/healthz"
+	httpMiscellaneous "github.com/turahe/interpesona-data/internal/interface/http/miscellaneous"
+	httpQueue "github.com/turahe/interpesona-data/internal/interface/http/queue"
+	httpUser "github.com/turahe/interpesona-data/internal/interface/http/user"
 )
 
 // ====================================================
@@ -23,9 +23,9 @@ func RegisterRoute(r *fiber.App) {
 	v1 := api.Group("/v1")
 
 	// Healthz API
-	healthzAPI := api.Group("/healthz")
-	healthzHandler := httpHealthz.NewHealthzHTTPHandler()
-	healthzAPI.Get("/", healthzHandler.Healthz)
+	healthAPI := api.Group("/healthz")
+	healthHandler := httpHealthz.NewHealthzHTTPHandler()
+	healthAPI.Get("/", healthHandler.Healthz)
 
 	// User API
 	userAPI := v1.Group("/users")
@@ -34,6 +34,8 @@ func RegisterRoute(r *fiber.App) {
 	userAPI.Get("/", userHandler.GetUsers)
 	userAPI.Get("/:id", userHandler.GetUserByID)
 	userAPI.Post("/", userHandler.CreateUser)
+	userAPI.Put("/:id", userHandler.UpdateUser)
+	userAPI.Delete("/:id", userHandler.DeleteUser)
 
 	// Queue API
 	queueAPI := v1.Group("/queues")

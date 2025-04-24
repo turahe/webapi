@@ -40,7 +40,7 @@ type Log struct {
 
 type Label struct {
 	En string `json:"en"`
-	Th string `json:"th"`
+	Th string `json:"id"`
 }
 
 type App struct {

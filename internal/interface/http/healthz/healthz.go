@@ -2,7 +2,8 @@ package healthz
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/kondohiroki/go-boilerplate/internal/interface/response"
+	"github.com/turahe/interpesona-data/internal/interface/response"
+	"net/http"
 )
 
 type HealthzHTTPHandler struct{}
@@ -12,10 +13,8 @@ func NewHealthzHTTPHandler() *HealthzHTTPHandler {
 }
 
 func (h *HealthzHTTPHandler) Healthz(c *fiber.Ctx) error {
-	c.Status(200).JSON(response.CommonResponse{
-		ResponseCode:    0,
+	return c.JSON(response.CommonResponse{
+		ResponseCode:    http.StatusOK,
 		ResponseMessage: "OK",
 	})
-
-	return nil
 }

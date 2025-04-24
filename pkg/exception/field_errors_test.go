@@ -4,9 +4,9 @@ import (
 	"testing"
 
 	"github.com/go-playground/validator/v10"
-	"github.com/kondohiroki/go-boilerplate/internal/interface/validation"
-	. "github.com/kondohiroki/go-boilerplate/pkg/exception"
 	"github.com/stretchr/testify/assert"
+	"github.com/turahe/interpesona-data/internal/interface/validation"
+	. "github.com/turahe/interpesona-data/pkg/exception"
 )
 
 func Test_NewValidationFailedErrors(t *testing.T) {

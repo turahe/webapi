@@ -3,9 +3,9 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/kondohiroki/go-boilerplate/build"
-	"github.com/kondohiroki/go-boilerplate/version"
 	"github.com/spf13/cobra"
+	"github.com/turahe/interpesona-data/build"
+	"github.com/turahe/interpesona-data/version"
 )
 
 func init() {

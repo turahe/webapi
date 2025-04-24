@@ -4,10 +4,10 @@ import (
 	"os"
 
 	"github.com/jedib0t/go-pretty/v6/table"
-	"github.com/kondohiroki/go-boilerplate/config"
-	"github.com/kondohiroki/go-boilerplate/internal/scheduler"
 	"github.com/lnquy/cron"
 	"github.com/spf13/cobra"
+	"github.com/turahe/interpesona-data/config"
+	"github.com/turahe/interpesona-data/internal/scheduler"
 )
 
 func init() {

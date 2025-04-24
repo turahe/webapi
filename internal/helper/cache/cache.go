@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/kondohiroki/go-boilerplate/internal/db/rdb"
+	"github.com/turahe/interpesona-data/internal/db/rdb"
 )
 
 // Set sets a key-value pair with an expiration time.

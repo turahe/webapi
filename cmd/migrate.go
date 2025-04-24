@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/kondohiroki/go-boilerplate/config"
-	"github.com/kondohiroki/go-boilerplate/internal/db/migrations"
-	"github.com/kondohiroki/go-boilerplate/internal/db/pgx"
-	"github.com/kondohiroki/go-boilerplate/internal/logger"
 	"github.com/spf13/cobra"
+	"github.com/turahe/interpesona-data/config"
+	"github.com/turahe/interpesona-data/internal/db/migrations"
+	"github.com/turahe/interpesona-data/internal/db/pgx"
+	"github.com/turahe/interpesona-data/internal/logger"
 	"go.uber.org/zap"
 )
 

@@ -17,10 +17,10 @@ type Job struct {
 	Status      string          `json:"status"` // "pending", "processing", "completed", "failed"
 	CreatedAt   time.Time       `json:"created_at"`
 	UpdatedAt   time.Time       `json:"updated_at"`
-	FailedJob   []FaildJob      `json:"failed_job"`
+	FailedJob   []FailedJob     `json:"failed_job"`
 }
 
-type FaildJob struct {
+type FailedJob struct {
 	ID       int             `json:"id"`
 	JobID    uuid.UUID       `json:"job_id"`
 	Queue    string          `json:"queue"`

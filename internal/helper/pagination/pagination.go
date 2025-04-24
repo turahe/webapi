@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/kondohiroki/go-boilerplate/internal/logger"
+	"github.com/turahe/interpesona-data/internal/logger"
 	"go.uber.org/zap"
 )
 

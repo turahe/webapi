@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"github.com/kondohiroki/go-boilerplate/internal/db/pgx"
-	"github.com/kondohiroki/go-boilerplate/internal/db/rdb"
+	"github.com/turahe/interpesona-data/internal/db/pgx"
+	"github.com/turahe/interpesona-data/internal/db/rdb"
 )
 
 type Repository struct {

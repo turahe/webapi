@@ -9,11 +9,11 @@ import (
 	"syscall"
 
 	"github.com/google/uuid"
-	"github.com/kondohiroki/go-boilerplate/internal/helper/queue"
-	"github.com/kondohiroki/go-boilerplate/internal/job"
-	"github.com/kondohiroki/go-boilerplate/internal/logger"
-	"github.com/kondohiroki/go-boilerplate/internal/repository"
 	"github.com/spf13/cobra"
+	"github.com/turahe/interpesona-data/internal/helper/queue"
+	"github.com/turahe/interpesona-data/internal/job"
+	"github.com/turahe/interpesona-data/internal/logger"
+	"github.com/turahe/interpesona-data/internal/repository"
 	"go.uber.org/zap"
 )
 

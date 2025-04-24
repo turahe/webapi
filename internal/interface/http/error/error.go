@@ -2,8 +2,8 @@ package error
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/kondohiroki/go-boilerplate/internal/interface/response"
-	"github.com/kondohiroki/go-boilerplate/pkg/exception"
+	"github.com/turahe/interpesona-data/internal/interface/response"
+	"github.com/turahe/interpesona-data/pkg/exception"
 )
 
 // Centralized error handler for all routes

@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/google/uuid"
-	"github.com/kondohiroki/go-boilerplate/internal/db/rdb"
+	"github.com/turahe/interpesona-data/internal/db/rdb"
 )
 
 const (

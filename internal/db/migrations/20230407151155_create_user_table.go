@@ -3,7 +3,7 @@ package migrations
 import (
 	"context"
 
-	"github.com/kondohiroki/go-boilerplate/internal/db/pgx"
+	"github.com/turahe/interpesona-data/internal/db/pgx"
 )
 
 func init() {
@@ -15,12 +15,18 @@ var createUserTable = &Migration{
 	Up: func() error {
 		_, err := pgx.GetPgxPool().Exec(context.Background(), `
 			CREATE TABLE users (
-				id SERIAL PRIMARY KEY,
-				name VARCHAR(255) NOT NULL,
-				email VARCHAR(255) NOT NULL UNIQUE
+				"id" UUID PRIMARY KEY,
+				"username" VARCHAR(255) NOT NULL,
+				"email" VARCHAR(255) NOT NULL UNIQUE,
+			    "phone" VARCHAR(255) NULL UNIQUE,
+			    "password" VARCHAR(255) NULL,
+			    "email_verified_at" TIMESTAMP NULL,
+			    "phone_verified_at" TIMESTAMP NULL,
+			    "created_at" TIMESTAMP DEFAULT NOW(),
+			    "updated_at" TIMESTAMP DEFAULT NOW(),
+			    "deleted_at" TIMESTAMP NULL
 			);
 
-			INSERT INTO users (name, email) VALUES ('Default User', 'user@example.com');
 		`)
 
 		if err != nil {
@@ -31,7 +37,7 @@ var createUserTable = &Migration{
 	},
 	Down: func() error {
 		_, err := pgx.GetPgxPool().Exec(context.Background(), `
-			// code here
+			DROP TABLE IF EXISTS users;
 		`)
 		if err != nil {
 			return err

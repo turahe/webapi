@@ -2,16 +2,21 @@ package user
 
 import (
 	"context"
+	"github.com/google/uuid"
+	"time"
 
-	"github.com/kondohiroki/go-boilerplate/internal/db/model"
-	"github.com/kondohiroki/go-boilerplate/internal/repository"
-	"github.com/kondohiroki/go-boilerplate/pkg/exception"
+	"github.com/turahe/interpesona-data/internal/db/model"
+	"github.com/turahe/interpesona-data/internal/repository"
+	"github.com/turahe/interpesona-data/pkg/exception"
 )
 
 type UserApp interface {
 	GetUsers(ctx context.Context) ([]GetUserDTO, error)
+	GetUsersWithPagination(ctx context.Context, limit int, page int) ([]GetUserDTO, error)
 	GetUserByID(ctx context.Context, input GetUserDTI) (GetUserDTO, error)
 	CreateUser(ctx context.Context, input CreateUserDTI) (CreateUserDTO, error)
+	UpdateUser(ctx context.Context, input UpdateUserDTI) (GetUserDTO, error)
+	DeleteUser(ctx context.Context, input DeleteUserDTI) (bool, error)
 }
 
 type userApp struct {
@@ -25,13 +30,16 @@ func NewUserApp(repo *repository.Repository) UserApp {
 }
 
 type GetUserDTI struct {
-	ID string
+	ID uuid.UUID `json:"id"`
 }
 
 type GetUserDTO struct {
-	ID    string `json:"id"`
-	Name  string `json:"name"`
-	Email string `json:"email"`
+	ID        uuid.UUID `json:"id"`
+	UserName  string    `json:"username"`
+	Email     string    `json:"email"`
+	Phone     string    `json:"phone"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
 }
 
 func (s *userApp) GetUsers(ctx context.Context) ([]GetUserDTO, error) {
@@ -43,9 +51,29 @@ func (s *userApp) GetUsers(ctx context.Context) ([]GetUserDTO, error) {
 	var usersDTO []GetUserDTO
 	for _, user := range users {
 		usersDTO = append(usersDTO, GetUserDTO{
-			ID:    user.ID,
-			Name:  user.Name,
-			Email: user.Email,
+			ID:       user.ID,
+			UserName: user.UserName,
+			Email:    user.Email,
+			Phone:    user.Phone,
+		})
+	}
+
+	return usersDTO, nil
+}
+
+func (s *userApp) GetUsersWithPagination(ctx context.Context, limit int, page int) ([]GetUserDTO, error) {
+	users, err := s.Repo.User.GetUsersWithPagination(ctx, limit, page)
+	if err != nil {
+		return nil, err
+	}
+
+	var usersDTO []GetUserDTO
+	for _, user := range users {
+		usersDTO = append(usersDTO, GetUserDTO{
+			ID:       user.ID,
+			UserName: user.UserName,
+			Email:    user.Email,
+			Phone:    user.Phone,
 		})
 	}
 
@@ -53,21 +81,34 @@ func (s *userApp) GetUsers(ctx context.Context) ([]GetUserDTO, error) {
 }
 
 func (s *userApp) GetUserByID(ctx context.Context, input GetUserDTI) (GetUserDTO, error) {
-	// Replace with actual logic to retrieve the user from the database.
+	user, err := s.Repo.User.GetUserByID(ctx, input.ID)
+	if err != nil {
+		return GetUserDTO{}, err
+	}
+	if user.ID == uuid.Nil { // Check for zero-value UUID
+		return GetUserDTO{}, exception.DataNotFoundError
+	}
 	return GetUserDTO{
-		ID:    input.ID,
-		Name:  "John Doe",
-		Email: "john.doe@example.com",
+		ID:       user.ID,
+		UserName: user.UserName,
+		Email:    user.Email,
+		Phone:    user.Phone,
 	}, nil
 }
 
 type CreateUserDTI struct {
-	Name  string `json:"name" validate:"required"`
-	Email string `json:"email" validate:"required,email"`
+	UserName string `json:"username" validate:"required"`
+	Email    string `json:"email" validate:"required,email"`
+	Phone    string `json:"phone" validate:"required"`
 }
 
 type CreateUserDTO struct {
-	ID int `json:"id"`
+	ID        uuid.UUID `json:"id"`
+	UserName  string    `json:"username"`
+	Email     string    `json:"email" `
+	Phone     string    `json:"phone" `
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
 }
 
 func (s *userApp) CreateUser(ctx context.Context, input CreateUserDTI) (CreateUserDTO, error) {
@@ -79,10 +120,18 @@ func (s *userApp) CreateUser(ctx context.Context, input CreateUserDTI) (CreateUs
 	if isUserEmailExist {
 		return CreateUserDTO{}, exception.UserEmailAlreadyTakenError
 	}
+	isUserPhoneExist, err := s.Repo.User.IsUserPhoneExist(ctx, input.Phone)
+	if err != nil {
+		return CreateUserDTO{}, err
+	}
+	if isUserPhoneExist {
+		return CreateUserDTO{}, exception.UserPhoneAlreadyTakenError
+	}
 
-	id, err := s.Repo.User.AddUser(ctx, model.User{
-		Name:  input.Name,
-		Email: input.Email,
+	user, err := s.Repo.User.AddUser(ctx, model.User{
+		UserName: input.UserName,
+		Email:    input.Email,
+		Phone:    input.Phone,
 	})
 
 	if err != nil {
@@ -90,6 +139,72 @@ func (s *userApp) CreateUser(ctx context.Context, input CreateUserDTI) (CreateUs
 	}
 
 	return CreateUserDTO{
-		ID: id,
+		ID:        user.ID,
+		UserName:  user.UserName,
+		Email:     user.Email,
+		Phone:     user.Phone,
+		CreatedAt: user.CreatedAt,
+		UpdatedAt: user.UpdatedAt,
 	}, nil
+}
+
+type UpdateUserDTI struct {
+	ID       uuid.UUID `json:"id"`
+	UserName string    `json:"username" validate:"required"`
+	Email    string    `json:"email" validate:"required,email"`
+	Phone    string    `json:"phone" validate:"required"`
+}
+
+type UpdateUserDTO struct {
+	ID       uuid.UUID `json:"id"`
+	UserName string    `json:"username"`
+	Email    string    `json:"email"`
+	Phone    string    `json:"phone"`
+}
+
+func (s *userApp) UpdateUser(ctx context.Context, input UpdateUserDTI) (GetUserDTO, error) {
+	userRepo, err := s.Repo.User.GetUserByID(ctx, input.ID)
+	if err != nil {
+		return GetUserDTO{}, err
+	}
+
+	user, err := s.Repo.User.UpdateUser(ctx, model.User{
+		ID:       userRepo.ID,
+		UserName: input.UserName,
+		Email:    input.Email,
+		Phone:    input.Phone,
+	})
+	if err != nil {
+		return GetUserDTO{}, err
+	}
+
+	if user.ID != uuid.Nil { // Check if the user was successfully updated
+		return GetUserDTO{
+			ID:        user.ID,
+			UserName:  user.UserName,
+			Email:     user.Email,
+			Phone:     user.Phone,
+			CreatedAt: user.CreatedAt,
+			UpdatedAt: user.UpdatedAt,
+		}, nil
+	}
+
+	return GetUserDTO{}, nil
+}
+
+type DeleteUserDTI struct {
+	ID uuid.UUID `json:"id"`
+}
+
+func (s *userApp) DeleteUser(ctx context.Context, input DeleteUserDTI) (bool, error) {
+	user, err := s.Repo.User.GetUserByID(ctx, input.ID)
+	if err != nil {
+		return false, err
+	}
+	deleteUser, err := s.Repo.User.DeleteUser(ctx, user.ID)
+	if err != nil {
+		return false, err
+	}
+
+	return deleteUser, nil
 }

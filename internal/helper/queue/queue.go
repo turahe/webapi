@@ -8,12 +8,12 @@ import (
 
 	"github.com/bytedance/sonic"
 	"github.com/google/uuid"
-	"github.com/kondohiroki/go-boilerplate/internal/db/model"
-	"github.com/kondohiroki/go-boilerplate/internal/db/rdb"
-	"github.com/kondohiroki/go-boilerplate/internal/job"
-	"github.com/kondohiroki/go-boilerplate/internal/logger"
-	"github.com/kondohiroki/go-boilerplate/internal/repository"
 	"github.com/redis/go-redis/v9"
+	"github.com/turahe/interpesona-data/internal/db/model"
+	"github.com/turahe/interpesona-data/internal/db/rdb"
+	"github.com/turahe/interpesona-data/internal/job"
+	"github.com/turahe/interpesona-data/internal/logger"
+	"github.com/turahe/interpesona-data/internal/repository"
 	"go.uber.org/zap"
 )
 
@@ -278,7 +278,7 @@ func handleFailedJob(ctx context.Context, rdbClient redis.Cmdable, queue string,
 		}
 
 		// Add failed job to postgres
-		_, err := repo.Job.AddFailedJob(ctx, model.FaildJob{
+		_, err := repo.Job.AddFailedJob(ctx, model.FailedJob{
 			JobID:    j.ID,
 			Queue:    queue,
 			Payload:  j.Payload,

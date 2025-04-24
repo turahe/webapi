@@ -3,8 +3,8 @@ package logger_test
 import (
 	"testing"
 
-	"github.com/kondohiroki/go-boilerplate/config"
-	. "github.com/kondohiroki/go-boilerplate/internal/logger"
+	"github.com/turahe/interpesona-data/config"
+	. "github.com/turahe/interpesona-data/internal/logger"
 	"go.uber.org/zap/zapcore"
 )
 

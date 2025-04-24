@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/kondohiroki/go-boilerplate/config"
-	"github.com/kondohiroki/go-boilerplate/internal/logger"
 	"github.com/redis/go-redis/v9"
+	"github.com/turahe/interpesona-data/config"
+	"github.com/turahe/interpesona-data/internal/logger"
 	"go.uber.org/zap"
 )
 

@@ -77,6 +77,12 @@ var (
 		SUBCODE_USER_EMAIL_ALREADY_TAKEN,
 		"user email already taken",
 	)
+	UserPhoneAlreadyTakenError *ExceptionErrors = createFixedExceptionErrors(
+		http.StatusUnprocessableEntity,
+		ERROR_TYPE_VALIDATION_ERROR,
+		SUBCODE_USER_PHONE_ALREADY_TAKEN,
+		"user phone already taken",
+	)
 
 	// JobError
 	BackgroundJobFailedError *ExceptionErrors = createFixedExceptionErrors(

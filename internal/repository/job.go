@@ -7,17 +7,17 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/kondohiroki/go-boilerplate/internal/db/model"
+	"github.com/turahe/interpesona-data/internal/db/model"
 )
 
 type JobRepository interface {
 	AddJob(ctx context.Context, job model.Job) (jobID uuid.UUID, err error)
-	AddFailedJob(ctx context.Context, job model.FaildJob) (failedJobID int, err error)
+	AddFailedJob(ctx context.Context, job model.FailedJob) (failedJobID int, err error)
 	UpdateJobStatus(ctx context.Context, jobID uuid.UUID, status string) error
 	ResetProcessingJobsToPending(ctx context.Context) error
 	GetJobs(ctx context.Context) ([]model.Job, error)
 	GetUnfinishedJobs(ctx context.Context) ([]model.Job, error)
-	GetFailedJobs(ctx context.Context) ([]model.FaildJob, error)
+	GetFailedJobs(ctx context.Context) ([]model.FailedJob, error)
 	RemoveFailedJob(ctx context.Context, jobID uuid.UUID) error
 }
 
@@ -55,7 +55,7 @@ func (j *JobRepositoryImpl) AddJob(ctx context.Context, job model.Job) (jobID uu
 	return jobID, nil
 }
 
-func (j *JobRepositoryImpl) AddFailedJob(ctx context.Context, job model.FaildJob) (failedJobID int, err error) {
+func (j *JobRepositoryImpl) AddFailedJob(ctx context.Context, job model.FailedJob) (failedJobID int, err error) {
 	tx, err := j.pgxPool.Begin(ctx)
 	if err != nil {
 		return failedJobID, err
@@ -165,7 +165,7 @@ func (j *JobRepositoryImpl) GetUnfinishedJobs(ctx context.Context) ([]model.Job,
 	return jobs, err
 }
 
-func (j *JobRepositoryImpl) GetFailedJobs(ctx context.Context) ([]model.FaildJob, error) {
+func (j *JobRepositoryImpl) GetFailedJobs(ctx context.Context) ([]model.FailedJob, error) {
 	rows, err := j.pgxPool.Query(ctx, `
 		SELECT id, job_id, queue, payload, error, failed_at FROM failed_jobs ORDER BY failed_at ASC
 	`)
@@ -174,9 +174,9 @@ func (j *JobRepositoryImpl) GetFailedJobs(ctx context.Context) ([]model.FaildJob
 	}
 	defer rows.Close()
 
-	var jobs []model.FaildJob
+	var jobs []model.FailedJob
 	for rows.Next() {
-		var job model.FaildJob
+		var job model.FailedJob
 		err := rows.Scan(&job.ID, &job.JobID, &job.Queue, &job.Payload, &job.Error, &job.FailedAt)
 		if err != nil {
 			return nil, err

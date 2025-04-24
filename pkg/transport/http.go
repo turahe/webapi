@@ -13,7 +13,7 @@ import (
 	"time"
 
 	"github.com/bytedance/sonic"
-	"github.com/kondohiroki/go-boilerplate/internal/logger"
+	"github.com/turahe/interpesona-data/internal/logger"
 )
 
 var bufferPool = sync.Pool{

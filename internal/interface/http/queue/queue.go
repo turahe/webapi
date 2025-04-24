@@ -2,8 +2,9 @@ package queue
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/kondohiroki/go-boilerplate/internal/app/queue"
-	"github.com/kondohiroki/go-boilerplate/internal/interface/response"
+	"github.com/turahe/interpesona-data/internal/app/queue"
+	"github.com/turahe/interpesona-data/internal/interface/response"
+	"net/http"
 )
 
 type QueueHTTPHandler struct {
@@ -21,7 +22,7 @@ func (h *QueueHTTPHandler) GetQueues(c *fiber.Ctx) error {
 	}
 
 	return c.JSON(response.CommonResponse{
-		ResponseCode:    0,
+		ResponseCode:    http.StatusOK,
 		ResponseMessage: "OK",
 		Data:            dtos,
 	})

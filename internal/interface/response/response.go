@@ -2,7 +2,7 @@ package response
 
 import (
 	"github.com/bytedance/sonic"
-	"github.com/kondohiroki/go-boilerplate/pkg/exception"
+	"github.com/turahe/interpesona-data/pkg/exception"
 )
 
 type DataUnwrapper interface {
@@ -11,11 +11,12 @@ type DataUnwrapper interface {
 
 // Standard Response
 type CommonResponse struct {
-	ResponseCode    int                        `json:"response_code"`
-	ResponseMessage string                     `json:"response_message"`
+	ResponseCode    int                        `json:"code"`
+	ResponseMessage string                     `json:"message"`
 	Errors          *exception.ExceptionErrors `json:"errors,omitempty"`
 	Data            any                        `json:"data,omitempty"`
 	RequestID       string                     `json:"request_id,omitempty"`
+	Path            string                     `json:"path,omitempty"`
 }
 
 func (resp *CommonResponse) UnwrapData(target interface{}) error {

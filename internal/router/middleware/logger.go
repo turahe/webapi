@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/kondohiroki/go-boilerplate/internal/logger"
+	"github.com/turahe/interpesona-data/internal/logger"
 	"go.uber.org/zap"
 )
 

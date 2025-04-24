@@ -3,7 +3,7 @@ package logger
 import (
 	"os"
 
-	"github.com/kondohiroki/go-boilerplate/config"
+	"github.com/turahe/interpesona-data/config"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"

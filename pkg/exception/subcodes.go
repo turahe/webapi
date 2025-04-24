@@ -18,6 +18,7 @@ var (
 	SUBCODE_API_NOTE_FOUND                 errorSubcode = newErrorSubcode(705)
 	SUBCODE_VALIDATION_FAILED              errorSubcode = newErrorSubcode(760)
 	SUBCODE_USER_EMAIL_ALREADY_TAKEN       errorSubcode = newErrorSubcode(761)
+	SUBCODE_USER_PHONE_ALREADY_TAKEN       errorSubcode = newErrorSubcode(761)
 	SUBCODE_INPUT_FIELD_IS_NOT_CONFIGURED  errorSubcode = newErrorSubcode(762)
 	SUBCODE_INVALID_FIELD_VALUE_FORMAT     errorSubcode = newErrorSubcode(762)
 	SUBCODE_NUM_MULTIPLE_VALUES_ERROR      errorSubcode = newErrorSubcode(763)

@@ -40,7 +40,7 @@ sentry:
   debug: false
 
 scheduler:
-  timezone: "Asia/Bangkok"
+  timezone: "Asia/Jakarta"
 # schedules:
 #   - cron: "0 */20 * * * *"
 #     job: "SyncAll"
