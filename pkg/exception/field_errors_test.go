@@ -1,6 +1,7 @@
 package exception_test
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/go-playground/validator/v10"
@@ -75,7 +76,8 @@ func Test_NewValidationFailedErrors(t *testing.T) {
 
 	for _, tc := range testCases {
 		if err := validate.Struct(tc.student); err != nil {
-			if vErrs, ok := err.(validator.ValidationErrors); ok {
+			var vErrs validator.ValidationErrors
+			if errors.As(err, &vErrs) {
 				actual := NewValidationFailedErrors(vErrs)
 				assert.Equal(t, tc.expected, actual)
 			}

@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net"
 	"net/http"
@@ -23,7 +24,7 @@ func init() {
 
 var serveAPICmd = &cobra.Command{
 	Use:     "serve-api",
-	Short:   "Start the RESTful API",
+	Short:   "Start the restFull API",
 	GroupID: "serve",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		// Setup all the required dependencies
@@ -49,7 +50,7 @@ var serveAPICmd = &cobra.Command{
 			logger.Log.Info(fmt.Sprintf("Network: http://%s:%d", localIP, port))
 			logger.Log.Info("waiting for requests...")
 
-			if err := r.Listen(fmt.Sprintf(":%d", port)); err != nil && err != http.ErrServerClosed {
+			if err := r.Listen(fmt.Sprintf(":%d", port)); err != nil && !errors.Is(err, http.ErrServerClosed) {
 				logger.Log.Fatal(fmt.Sprintf("listen: %s\n", err))
 			}
 		}()

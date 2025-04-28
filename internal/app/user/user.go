@@ -3,7 +3,7 @@ package user
 import (
 	"context"
 	"github.com/google/uuid"
-	"time"
+	user "github.com/turahe/interpesona-data/internal/dto"
 
 	"github.com/turahe/interpesona-data/internal/db/model"
 	"github.com/turahe/interpesona-data/internal/repository"
@@ -11,12 +11,12 @@ import (
 )
 
 type UserApp interface {
-	GetUsers(ctx context.Context) ([]GetUserDTO, error)
-	GetUsersWithPagination(ctx context.Context, limit int, page int) ([]GetUserDTO, error)
-	GetUserByID(ctx context.Context, input GetUserDTI) (GetUserDTO, error)
-	CreateUser(ctx context.Context, input CreateUserDTI) (CreateUserDTO, error)
-	UpdateUser(ctx context.Context, input UpdateUserDTI) (GetUserDTO, error)
-	DeleteUser(ctx context.Context, input DeleteUserDTI) (bool, error)
+	GetUsers(ctx context.Context) ([]user.GetUserDTO, error)
+	GetUsersWithPagination(ctx context.Context, input user.GetUsersWithPaginationDTI) (user.GetUsersWithPaginationDTO, error)
+	GetUserByID(ctx context.Context, input user.GetUserDTI) (user.GetUserDTO, error)
+	CreateUser(ctx context.Context, input user.CreateUserDTI) (user.GetUserDTO, error)
+	UpdateUser(ctx context.Context, input user.UpdateUserDTI) (user.GetUserDTO, error)
+	DeleteUser(ctx context.Context, input user.DeleteUserDTI) (bool, error)
 }
 
 type userApp struct {
@@ -29,179 +29,126 @@ func NewUserApp(repo *repository.Repository) UserApp {
 	}
 }
 
-type GetUserDTI struct {
-	ID uuid.UUID `json:"id"`
-}
-
-type GetUserDTO struct {
-	ID        uuid.UUID `json:"id"`
-	UserName  string    `json:"username"`
-	Email     string    `json:"email"`
-	Phone     string    `json:"phone"`
-	CreatedAt time.Time `json:"createdAt"`
-	UpdatedAt time.Time `json:"updatedAt"`
-}
-
-func (s *userApp) GetUsers(ctx context.Context) ([]GetUserDTO, error) {
+func (s *userApp) GetUsers(ctx context.Context) ([]user.GetUserDTO, error) {
 	users, err := s.Repo.User.GetUsers(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	var usersDTO []GetUserDTO
-	for _, user := range users {
-		usersDTO = append(usersDTO, GetUserDTO{
-			ID:       user.ID,
-			UserName: user.UserName,
-			Email:    user.Email,
-			Phone:    user.Phone,
+	var usersDTO []user.GetUserDTO
+	for _, userRepo := range users {
+		usersDTO = append(usersDTO, user.GetUserDTO{
+			ID:       userRepo.ID,
+			UserName: userRepo.UserName,
+			Email:    userRepo.Email,
+			Phone:    userRepo.Phone,
 		})
 	}
 
 	return usersDTO, nil
 }
 
-func (s *userApp) GetUsersWithPagination(ctx context.Context, limit int, page int) ([]GetUserDTO, error) {
-	users, err := s.Repo.User.GetUsersWithPagination(ctx, limit, page)
+func (s *userApp) GetUsersWithPagination(ctx context.Context, input user.GetUsersWithPaginationDTI) (user.GetUsersWithPaginationDTO, error) {
+	responseUser, err := s.Repo.User.GetUsersWithPagination(ctx, input)
 	if err != nil {
-		return nil, err
+		return user.GetUsersWithPaginationDTO{}, err
 	}
 
-	var usersDTO []GetUserDTO
-	for _, user := range users {
-		usersDTO = append(usersDTO, GetUserDTO{
-			ID:       user.ID,
-			UserName: user.UserName,
-			Email:    user.Email,
-			Phone:    user.Phone,
-		})
-	}
-
-	return usersDTO, nil
+	return responseUser, nil
 }
 
-func (s *userApp) GetUserByID(ctx context.Context, input GetUserDTI) (GetUserDTO, error) {
-	user, err := s.Repo.User.GetUserByID(ctx, input.ID)
+func (s *userApp) GetUserByID(ctx context.Context, input user.GetUserDTI) (user.GetUserDTO, error) {
+	userRepo, err := s.Repo.User.GetUserByID(ctx, input)
 	if err != nil {
-		return GetUserDTO{}, err
+		return user.GetUserDTO{}, err
 	}
-	if user.ID == uuid.Nil { // Check for zero-value UUID
-		return GetUserDTO{}, exception.DataNotFoundError
+	if userRepo.ID == uuid.Nil { // Check for zero-value UUID
+		return user.GetUserDTO{}, exception.DataNotFoundError
 	}
-	return GetUserDTO{
-		ID:       user.ID,
-		UserName: user.UserName,
-		Email:    user.Email,
-		Phone:    user.Phone,
+	return user.GetUserDTO{
+		ID:       userRepo.ID,
+		UserName: userRepo.UserName,
+		Email:    userRepo.Email,
+		Phone:    userRepo.Phone,
 	}, nil
 }
 
-type CreateUserDTI struct {
-	UserName string `json:"username" validate:"required"`
-	Email    string `json:"email" validate:"required,email"`
-	Phone    string `json:"phone" validate:"required"`
-}
-
-type CreateUserDTO struct {
-	ID        uuid.UUID `json:"id"`
-	UserName  string    `json:"username"`
-	Email     string    `json:"email" `
-	Phone     string    `json:"phone" `
-	CreatedAt time.Time `json:"createdAt"`
-	UpdatedAt time.Time `json:"updatedAt"`
-}
-
-func (s *userApp) CreateUser(ctx context.Context, input CreateUserDTI) (CreateUserDTO, error) {
+func (s *userApp) CreateUser(ctx context.Context, input user.CreateUserDTI) (user.GetUserDTO, error) {
 	// Ensure email is not already taken
 	isUserEmailExist, err := s.Repo.User.IsUserEmailExist(ctx, input.Email)
 	if err != nil {
-		return CreateUserDTO{}, err
+		return user.GetUserDTO{}, err
 	}
 	if isUserEmailExist {
-		return CreateUserDTO{}, exception.UserEmailAlreadyTakenError
+		return user.GetUserDTO{}, exception.UserEmailAlreadyTakenError
 	}
 	isUserPhoneExist, err := s.Repo.User.IsUserPhoneExist(ctx, input.Phone)
 	if err != nil {
-		return CreateUserDTO{}, err
+		return user.GetUserDTO{}, err
 	}
 	if isUserPhoneExist {
-		return CreateUserDTO{}, exception.UserPhoneAlreadyTakenError
+		return user.GetUserDTO{}, exception.UserPhoneAlreadyTakenError
 	}
 
-	user, err := s.Repo.User.AddUser(ctx, model.User{
+	userRepo, err := s.Repo.User.AddUser(ctx, model.User{
 		UserName: input.UserName,
 		Email:    input.Email,
 		Phone:    input.Phone,
 	})
 
 	if err != nil {
-		return CreateUserDTO{}, err
+		return user.GetUserDTO{}, err
 	}
 
-	return CreateUserDTO{
-		ID:        user.ID,
-		UserName:  user.UserName,
-		Email:     user.Email,
-		Phone:     user.Phone,
-		CreatedAt: user.CreatedAt,
-		UpdatedAt: user.UpdatedAt,
+	return user.GetUserDTO{
+		ID:        userRepo.ID,
+		UserName:  userRepo.UserName,
+		Email:     userRepo.Email,
+		Phone:     userRepo.Phone,
+		CreatedAt: userRepo.CreatedAt,
+		UpdatedAt: userRepo.UpdatedAt,
 	}, nil
 }
 
-type UpdateUserDTI struct {
-	ID       uuid.UUID `json:"id"`
-	UserName string    `json:"username" validate:"required"`
-	Email    string    `json:"email" validate:"required,email"`
-	Phone    string    `json:"phone" validate:"required"`
-}
-
-type UpdateUserDTO struct {
-	ID       uuid.UUID `json:"id"`
-	UserName string    `json:"username"`
-	Email    string    `json:"email"`
-	Phone    string    `json:"phone"`
-}
-
-func (s *userApp) UpdateUser(ctx context.Context, input UpdateUserDTI) (GetUserDTO, error) {
-	userRepo, err := s.Repo.User.GetUserByID(ctx, input.ID)
+func (s *userApp) UpdateUser(ctx context.Context, input user.UpdateUserDTI) (user.GetUserDTO, error) {
+	id := user.GetUserDTI{
+		ID: input.ID,
+	}
+	userRepo, err := s.Repo.User.GetUserByID(ctx, id)
 	if err != nil {
-		return GetUserDTO{}, err
+		return user.GetUserDTO{}, err
 	}
 
-	user, err := s.Repo.User.UpdateUser(ctx, model.User{
+	userRepo, err = s.Repo.User.UpdateUser(ctx, model.User{
 		ID:       userRepo.ID,
 		UserName: input.UserName,
 		Email:    input.Email,
 		Phone:    input.Phone,
 	})
 	if err != nil {
-		return GetUserDTO{}, err
+		return user.GetUserDTO{}, err
 	}
 
-	if user.ID != uuid.Nil { // Check if the user was successfully updated
-		return GetUserDTO{
-			ID:        user.ID,
-			UserName:  user.UserName,
-			Email:     user.Email,
-			Phone:     user.Phone,
-			CreatedAt: user.CreatedAt,
-			UpdatedAt: user.UpdatedAt,
+	if userRepo.ID != uuid.Nil { // Check if the user was successfully updated
+		return user.GetUserDTO{
+			ID:        userRepo.ID,
+			UserName:  userRepo.UserName,
+			Email:     userRepo.Email,
+			Phone:     userRepo.Phone,
+			CreatedAt: userRepo.CreatedAt,
+			UpdatedAt: userRepo.UpdatedAt,
 		}, nil
 	}
 
-	return GetUserDTO{}, nil
+	return user.GetUserDTO{}, nil
 }
 
-type DeleteUserDTI struct {
-	ID uuid.UUID `json:"id"`
-}
-
-func (s *userApp) DeleteUser(ctx context.Context, input DeleteUserDTI) (bool, error) {
-	user, err := s.Repo.User.GetUserByID(ctx, input.ID)
+func (s *userApp) DeleteUser(ctx context.Context, input user.DeleteUserDTI) (bool, error) {
+	userRepo, err := s.Repo.User.GetUserByID(ctx, user.GetUserDTI{ID: input.ID})
 	if err != nil {
 		return false, err
 	}
-	deleteUser, err := s.Repo.User.DeleteUser(ctx, user.ID)
+	deleteUser, err := s.Repo.User.DeleteUser(ctx, user.GetUserDTI{ID: userRepo.ID})
 	if err != nil {
 		return false, err
 	}

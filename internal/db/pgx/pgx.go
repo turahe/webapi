@@ -35,7 +35,7 @@ func InitPgConnectionPool(postgresConfig config.Postgres) error {
 
 	connConfig, err := pgxpool.ParseConfig(connStr)
 	if err != nil {
-		fmt.Println("Failed to parse config:", err)
+		logger.Log.Error("Failed to parse config:", zap.Error(err))
 		return err
 	}
 

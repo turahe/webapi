@@ -3,6 +3,7 @@ package user
 import (
 	"errors"
 	"github.com/google/uuid"
+	dto "github.com/turahe/interpesona-data/internal/dto"
 	"net/http"
 
 	"github.com/go-playground/validator/v10"
@@ -21,20 +22,33 @@ func NewUserHTTPHandler(app user.UserApp) *UserHTTPHandler {
 	return &UserHTTPHandler{app: app}
 }
 
-// Write me GetUsers function
+// GetUsers Write me GetUsers function
 func (h *UserHTTPHandler) GetUsers(c *fiber.Ctx) error {
 	limit := c.QueryInt("limit", 10) // Default to 10 if not provided
 	page := c.QueryInt("page", 1)    // Default to 1 if not provided
-	dtos, err := h.app.GetUsersWithPagination(c.Context(), limit, page)
+	query := c.Query("query", "")    // Default to empty string if not provided
+
+	offset := (page - 1) * limit
+	req := dto.GetUsersWithPaginationDTI{
+		Query: query,
+		Limit: limit,
+		Page:  offset,
+	}
+	responseUser, err := h.app.GetUsersWithPagination(c.Context(), req)
 	if err != nil {
 		return err
 	}
 
-	return c.JSON(response.CommonResponse{
-		ResponseCode:    http.StatusOK,
-		ResponseMessage: "OK",
-		Data:            dtos,
-		Path:            c.Path(),
+	return c.JSON(response.PaginationResponse{
+		TotalCount:   responseUser.Total,
+		TotalPage:    responseUser.Total / limit,
+		CurrentPage:  page,
+		LastPage:     responseUser.LastPage,
+		PerPage:      limit,
+		NextPage:     page + 1,
+		PreviousPage: page - 1,
+		Data:         responseUser.Data,
+		Path:         c.Path(),
 	})
 }
 
@@ -47,8 +61,7 @@ func (h *UserHTTPHandler) GetUserByID(c *fiber.Ctx) error {
 		return exception.InvalidIDError
 	}
 
-	dti := user.GetUserDTI{ID: id}
-	dto, err := h.app.GetUserByID(c.Context(), dti)
+	userDto, err := h.app.GetUserByID(c.Context(), dto.GetUserDTI{ID: id})
 	if err != nil {
 		return err
 	}
@@ -56,12 +69,12 @@ func (h *UserHTTPHandler) GetUserByID(c *fiber.Ctx) error {
 	return c.JSON(response.CommonResponse{
 		ResponseCode:    http.StatusOK,
 		ResponseMessage: "OK",
-		Data:            dto,
+		Data:            userDto,
 	})
 }
 
 func (h *UserHTTPHandler) CreateUser(c *fiber.Ctx) error {
-	var req user.CreateUserDTI
+	var req dto.CreateUserDTI
 
 	// Parse the request body
 	if err := c.BodyParser(&req); err != nil {
@@ -78,7 +91,7 @@ func (h *UserHTTPHandler) CreateUser(c *fiber.Ctx) error {
 	}
 
 	// Process the business logic
-	dto, err := h.app.CreateUser(c.Context(), user.CreateUserDTI{
+	dto, err := h.app.CreateUser(c.Context(), dto.CreateUserDTI{
 		UserName: req.UserName,
 		Email:    req.Email,
 		Phone:    req.Phone,
@@ -103,7 +116,7 @@ func (h *UserHTTPHandler) UpdateUser(c *fiber.Ctx) error {
 		return exception.InvalidIDError
 	}
 
-	var req user.UpdateUserDTI
+	var req dto.UpdateUserDTI
 
 	// Parse the request body
 	if err := c.BodyParser(&req); err != nil {
@@ -119,7 +132,7 @@ func (h *UserHTTPHandler) UpdateUser(c *fiber.Ctx) error {
 		}
 	}
 
-	dto, err := h.app.UpdateUser(c.Context(), user.UpdateUserDTI{
+	dto, err := h.app.UpdateUser(c.Context(), dto.UpdateUserDTI{
 		ID:       id,
 		UserName: req.UserName,
 		Email:    req.Email,
@@ -145,7 +158,7 @@ func (h *UserHTTPHandler) DeleteUser(c *fiber.Ctx) error {
 		return exception.InvalidIDError
 	}
 
-	_, err = h.app.DeleteUser(c.Context(), user.DeleteUserDTI{ID: id})
+	_, err = h.app.DeleteUser(c.Context(), dto.DeleteUserDTI{ID: id})
 	if err != nil {
 		return err
 	}

@@ -6,6 +6,7 @@ import (
 	"github.com/turahe/interpesona-data/internal/app/user"
 	"github.com/turahe/interpesona-data/internal/repository"
 
+	httpAuth "github.com/turahe/interpesona-data/internal/interface/http/auth"
 	httpHealthz "github.com/turahe/interpesona-data/internal/interface/http/healthz"
 	httpMiscellaneous "github.com/turahe/interpesona-data/internal/interface/http/miscellaneous"
 	httpQueue "github.com/turahe/interpesona-data/internal/interface/http/queue"
@@ -36,6 +37,11 @@ func RegisterRoute(r *fiber.App) {
 	userAPI.Post("/", userHandler.CreateUser)
 	userAPI.Put("/:id", userHandler.UpdateUser)
 	userAPI.Delete("/:id", userHandler.DeleteUser)
+
+	// auth
+	authApi := v1.Group("/auth")
+	registerHandler := httpAuth.NewRegisterHTTPHandler(userApp)
+	authApi.Post("/register", registerHandler.Register)
 
 	// Queue API
 	queueAPI := v1.Group("/queues")
