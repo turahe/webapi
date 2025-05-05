@@ -6,7 +6,7 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/stretchr/testify/assert"
-	"github.com/turahe/interpesona-data/internal/interface/validation"
+	"github.com/turahe/interpesona-data/internal/http/validation"
 	. "github.com/turahe/interpesona-data/pkg/exception"
 )
 

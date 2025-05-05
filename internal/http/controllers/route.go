@@ -6,11 +6,11 @@ import (
 	"github.com/turahe/interpesona-data/internal/app/user"
 	"github.com/turahe/interpesona-data/internal/repository"
 
-	httpAuth "github.com/turahe/interpesona-data/internal/interface/http/auth"
-	httpHealthz "github.com/turahe/interpesona-data/internal/interface/http/healthz"
-	httpMiscellaneous "github.com/turahe/interpesona-data/internal/interface/http/miscellaneous"
-	httpQueue "github.com/turahe/interpesona-data/internal/interface/http/queue"
-	httpUser "github.com/turahe/interpesona-data/internal/interface/http/user"
+	httpAuth "github.com/turahe/interpesona-data/internal/http/controllers/auth"
+	httpHealthz "github.com/turahe/interpesona-data/internal/http/controllers/healthz"
+	httpMiscellaneous "github.com/turahe/interpesona-data/internal/http/controllers/miscellaneous"
+	httpQueue "github.com/turahe/interpesona-data/internal/http/controllers/queue"
+	httpUser "github.com/turahe/interpesona-data/internal/http/controllers/user"
 )
 
 // ====================================================

@@ -41,7 +41,7 @@ func InitValidator() {
 		en := en.New()
 		uni = ut.New(en, en)
 
-		// This is usually know or extracted from http 'Accept-Language' header
+		// This is usually know or extracted from controllers 'Accept-Language' header
 		// also see uni.FindTranslator(...)
 		trans, _ = uni.GetTranslator("en")
 

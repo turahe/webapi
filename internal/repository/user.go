@@ -122,7 +122,6 @@ func (u *UserRepositoryImpl) GetUsersWithPagination(ctx context.Context, input u
 	var query = input.Query
 	var limit = input.Limit
 	var page = input.Page
-	fmt.Prin
 
 	rows, err := u.pgxPool.Query(ctx, `
 	SELECT id, username, email, phone, created_at, updated_at

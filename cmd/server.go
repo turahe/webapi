@@ -12,7 +12,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/turahe/interpesona-data/config"
-	"github.com/turahe/interpesona-data/internal/interface/validation"
+	"github.com/turahe/interpesona-data/internal/http/validation"
 	"github.com/turahe/interpesona-data/internal/logger"
 	"github.com/turahe/interpesona-data/internal/router"
 )
@@ -23,14 +23,14 @@ func init() {
 }
 
 var serveAPICmd = &cobra.Command{
-	Use:     "serve-api",
+	Use:     "server",
 	Short:   "Start the restFull API",
 	GroupID: "serve",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		// Setup all the required dependencies
 		setupAll()
 
-		// Create http router
+		// Create controllers router
 		r := router.NewFiberRouter()
 
 		// Create validator instance

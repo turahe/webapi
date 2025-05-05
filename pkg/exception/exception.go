@@ -11,13 +11,13 @@ type ExceptionErrors struct {
 	ErrItems      []*ExceptionError
 }
 
-// Error implements go built-in error interface.
+// Error implements go built-in error http.
 // This will output to CommonResponse for our project.
 func (cErrs *ExceptionErrors) Error() string {
 	return cErrs.GlobalMessage
 }
 
-// MarshalJSON implements JSON marshaller interface.
+// MarshalJSON implements JSON marshaller http.
 // This will marshal only property ErrItems.
 func (cErrs *ExceptionErrors) MarshalJSON() ([]byte, error) {
 	return sonic.Marshal(cErrs.ErrItems)

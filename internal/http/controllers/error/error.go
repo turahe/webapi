@@ -2,7 +2,7 @@ package error
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/turahe/interpesona-data/internal/interface/response"
+	"github.com/turahe/interpesona-data/internal/http/response"
 	"github.com/turahe/interpesona-data/pkg/exception"
 )
 

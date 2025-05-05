@@ -10,8 +10,8 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/requestid"
 	"github.com/turahe/interpesona-data/internal/router/middleware"
 
-	httpInterface "github.com/turahe/interpesona-data/internal/interface/http"
-	httpError "github.com/turahe/interpesona-data/internal/interface/http/error"
+	httpInterface "github.com/turahe/interpesona-data/internal/http/controllers"
+	httpError "github.com/turahe/interpesona-data/internal/http/controllers/error"
 )
 
 func NewFiberRouter() *fiber.App {

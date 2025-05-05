@@ -2,7 +2,7 @@ package healthz
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/turahe/interpesona-data/internal/interface/response"
+	"github.com/turahe/interpesona-data/internal/http/response"
 	"net/http"
 )
 

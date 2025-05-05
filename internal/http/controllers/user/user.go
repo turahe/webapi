@@ -9,8 +9,8 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	"github.com/turahe/interpesona-data/internal/app/user"
-	"github.com/turahe/interpesona-data/internal/interface/response"
-	"github.com/turahe/interpesona-data/internal/interface/validation"
+	"github.com/turahe/interpesona-data/internal/http/response"
+	"github.com/turahe/interpesona-data/internal/http/validation"
 	"github.com/turahe/interpesona-data/pkg/exception"
 )
 

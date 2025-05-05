@@ -3,7 +3,7 @@ services:
     image: postgres:17
     restart: on-failure
     volumes:
-      - ../tmp/postgres:/var/lib/postgresql/data
+      - ./db_data/postgresql:/var/lib/postgresql/data
     environment:
       PGPASSWORD: 'secret'
       POSTGRES_DB: 'my_db'
@@ -27,7 +27,7 @@ services:
     image: redis:alpine
     restart: on-failure
     volumes:
-      - ../tmp/redis:/data
+      - ./db_data/redis:/data
     ports:
       - 6379:6379
     healthcheck:

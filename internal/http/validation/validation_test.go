@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/go-playground/validator/v10"
-	. "github.com/turahe/interpesona-data/internal/interface/validation"
+	. "github.com/turahe/interpesona-data/internal/http/validation"
 )
 
 type testStruct struct {

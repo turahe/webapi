@@ -21,7 +21,7 @@ postgres:
   host: "localhost" # use "host.docker.internal" if you run app inside docker container
   port: 54321
   database: "my_db"
-  schema: "my_schema"
+  schema: "public"
   username: "my_user"
   password: "my_password"
   maxConnections: 20

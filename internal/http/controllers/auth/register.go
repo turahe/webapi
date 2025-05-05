@@ -6,8 +6,8 @@ import (
 	//model "github.com/turahe/interpesona-data/internal/db/model"
 	dto "github.com/turahe/interpesona-data/internal/dto"
 	password "github.com/turahe/interpesona-data/internal/helper/utils"
-	"github.com/turahe/interpesona-data/internal/interface/requests"
-	"github.com/turahe/interpesona-data/internal/interface/response"
+	"github.com/turahe/interpesona-data/internal/http/requests"
+	"github.com/turahe/interpesona-data/internal/http/response"
 	"net/http"
 )
 
