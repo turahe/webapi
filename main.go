@@ -13,7 +13,7 @@ import (
 
 func main() {
 	defer func() {
-		_ = os.Remove("tmp/live")
+		_ = os.Remove("./tmp/live")
 
 		// Close the database connection pool
 		pgx.ClosePgxPool()
@@ -25,7 +25,7 @@ func main() {
 	}()
 
 	// Liveness probe for Kubernetes
-	_, err := os.Create("tmp/live")
+	_, err := os.Create("./tmp/live")
 	if err != nil {
 		log.Fatalf("Cannot create a Liveness file: %v", err)
 	}

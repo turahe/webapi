@@ -1,4 +1,17 @@
 services:
+  webapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: on-failure
+    depends_on:
+      - redis
+      - postgres
+    volumes:
+      - ./tmp:/app/tmp
+    ports:
+        - 8000:8000
+
   postgres:
     image: postgres:17
     restart: on-failure
@@ -12,14 +25,7 @@ services:
     ports:
       - 5432:5432
     healthcheck:
-      test:
-        - CMD
-        - pg_isready
-        - '-q'
-        - '-d'
-        - 'my_db'
-        - '-U'
-        - 'my_user'
+      test: ["CMD", "pg_isready", "-q", "-d", "my_db", "-U", "my_user"]
       retries: 3
       timeout: 5s
 

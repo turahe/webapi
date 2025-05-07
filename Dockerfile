@@ -1,21 +1,36 @@
-# Build stage
-FROM golang:1.20.2-alpine3.17 as builder
+# Build Stage
+FROM golang:1.24.2-alpine AS builder
+LABEL maintainer="Nur Wachid <wachid@outlook.com>"
+ENV CGO_ENABLED=1
+ENV GO111MODULE=on
 
-RUN apk add --no-cache git
+RUN apk add --no-cache git gcc g++
 
 WORKDIR /app
 
+# Copy Go Modules files
+COPY go.mod .
+COPY go.sum .
+RUN go mod download
+
+# Copy the rest of the application source code
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
-
-RUN go clean -modcache
-
+RUN go build -o /app/webapi /app/main.go
+RUN ls /app -lah
 # Run stage
-FROM alpine:3.17
+FROM alpine:latest
+RUN apk add --no-cache ca-certificates
 
+ENV TZ=Asia/Jakarta
 WORKDIR /app
 
-COPY --from=builder /app/main .
+# Copy the built binary
+COPY --from=builder /app/webapi /app/webapi
+COPY --from=builder /app/config/config.example.yaml /app/config/config.yaml
+# Ensure executable permissions
+RUN chmod +x /app/webapi
 
-ENTRYPOINT ["./main"]
+EXPOSE 8000
+
+ENTRYPOINT ["/app/webapi", "server"]

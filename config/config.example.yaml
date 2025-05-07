@@ -5,7 +5,7 @@ app:
   nameSlug: "my-app"
 
 httpServer:
-  port: 8082
+  port: 8000
 
 log:
   level: "debug"
@@ -18,29 +18,29 @@ log:
   maxBackups: 10 # umber of log files
 
 postgres:
-  host: "localhost" # use "host.docker.internal" if you run app inside docker container
-  port: 54321
+  host: "postgres" # use "host.docker.internal" if you run app inside docker container
+  port: 5432
   database: "my_db"
   schema: "public"
   username: "my_user"
-  password: "my_password"
+  password: "secret"
   maxConnections: 20
   maxIdleConnections: 10
 
 Redis:
-  - host: "localhost"
-    port: 63791
+  - host: "redis"
+    port: 6379
     password: ""
     db: 0
 
 sentry:
   dsn: ""
   environment: "DEV"
-  release: "go-boilerplate@v0.1.0"
+  release: "webapi@v0.1.0"
   debug: false
 
 scheduler:
-  timezone: "Asia/Jakarta"
+  timezone: "Asia/Jakarta" # Timezone for cron jobs
 # schedules:
 #   - cron: "0 */20 * * * *"
 #     job: "SyncAll"
