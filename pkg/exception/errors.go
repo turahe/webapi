@@ -49,6 +49,12 @@ var (
 		SUBCODE_DATA_NOT_FOUND,
 		"data is not found",
 	)
+	InvalidCredentialsError *ExceptionErrors = createFixedExceptionErrors(
+		http.StatusUnauthorized,
+		ERROR_TYPE_NOT_FOUND,
+		SUBCODE_UNAUTHORIZED,
+		"invalid credentials",
+	)
 	ApiNotFoundError *ExceptionErrors = createFixedExceptionErrors(
 		http.StatusNotFound,
 		ERROR_TYPE_NOT_FOUND,

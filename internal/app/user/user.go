@@ -2,8 +2,10 @@ package user
 
 import (
 	"context"
+	"fmt"
 	"github.com/google/uuid"
 	user "webapi/internal/dto"
+	password "webapi/internal/helper/utils"
 
 	"webapi/internal/db/model"
 	"webapi/internal/repository"
@@ -11,6 +13,7 @@ import (
 )
 
 type UserApp interface {
+	Login(ctx context.Context, dti user.LoginUserDTI) (user.GetUserDTO, error)
 	GetUsers(ctx context.Context) ([]user.GetUserDTO, error)
 	GetUsersWithPagination(ctx context.Context, input user.GetUsersWithPaginationDTI) (user.GetUsersWithPaginationDTO, error)
 	GetUserByID(ctx context.Context, input user.GetUserDTI) (user.GetUserDTO, error)
@@ -27,6 +30,32 @@ func NewUserApp(repo *repository.Repository) UserApp {
 	return &userApp{
 		Repo: repo,
 	}
+}
+
+func (s *userApp) Login(ctx context.Context, dti user.LoginUserDTI) (user.GetUserDTO, error) {
+	userRepo, err := s.Repo.User.GetUserByUsername(ctx, dti.UserName)
+	if err != nil {
+		return user.GetUserDTO{}, err
+	}
+	fmt.Println(userRepo)
+	authLogin := password.ComparePassword(userRepo.Password, dti.Password)
+
+	if userRepo.ID == uuid.Nil { // Check for zero-value UUID
+		return user.GetUserDTO{}, exception.DataNotFoundError
+	}
+	if authLogin {
+		return user.GetUserDTO{
+			ID:        userRepo.ID,
+			UserName:  userRepo.UserName,
+			Email:     userRepo.Email,
+			Phone:     userRepo.Phone,
+			CreatedAt: userRepo.CreatedAt,
+			UpdatedAt: userRepo.UpdatedAt,
+		}, nil
+
+	}
+	return user.GetUserDTO{}, exception.InvalidCredentialsError
+
 }
 
 func (s *userApp) GetUsers(ctx context.Context) ([]user.GetUserDTO, error) {
@@ -94,6 +123,7 @@ func (s *userApp) CreateUser(ctx context.Context, input user.CreateUserDTI) (use
 		UserName: input.UserName,
 		Email:    input.Email,
 		Phone:    input.Phone,
+		Password: password.GeneratePassword(input.Password),
 	})
 
 	if err != nil {

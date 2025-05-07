@@ -188,8 +188,8 @@ func (u *UserRepositoryImpl) AddUser(ctx context.Context, user model.User) (mode
 	}
 	defer tx.Rollback(ctx)
 
-	err = tx.QueryRow(ctx, "INSERT INTO users (id, username, email, phone) VALUES ($1, $2, $3, $4) RETURNING id, username, email, phone, created_at, updated_at", uuid.New(), user.UserName, user.Email, user.Phone).
-		Scan(&user.ID, &user.UserName, &user.Email, &user.Phone, &user.CreatedAt, &user.UpdatedAt)
+	err = tx.QueryRow(ctx, "INSERT INTO users (id, username, email, phone, password) VALUES ($1, $2, $3, $4, $5) RETURNING id, username, email, phone, password, created_at, updated_at", uuid.New(), user.UserName, user.Email, user.Phone, user.Password).
+		Scan(&user.ID, &user.UserName, &user.Email, &user.Phone, &user.Password, &user.CreatedAt, &user.UpdatedAt)
 	if err != nil {
 		return model.User{}, err
 	}
@@ -237,7 +237,8 @@ func (u *UserRepositoryImpl) UpdateUser(ctx context.Context, user model.User) (m
 
 func (u *UserRepositoryImpl) GetUserByEmail(ctx context.Context, email string) (model.User, error) {
 	var user model.User
-	err := u.pgxPool.QueryRow(ctx, "SELECT id, username, email, phone FROM users WHERE email = $1", email).Scan(&user.ID, &user.UserName, &user.Email, &user.Phone)
+	err := u.pgxPool.QueryRow(ctx, "SELECT id, username, email, phone FROM users WHERE email = $1", email).
+		Scan(&user.ID, &user.UserName, &user.Email, &user.Phone)
 	if err != nil {
 		return model.User{}, err
 	}
@@ -245,21 +246,24 @@ func (u *UserRepositoryImpl) GetUserByEmail(ctx context.Context, email string) (
 }
 
 func (u *UserRepositoryImpl) GetUserByPhone(ctx context.Context, phone string) (model.User, error) {
-	var user model.User
-	err := u.pgxPool.QueryRow(ctx, "SELECT id, username, email, phone FROM users WHERE phone = $1", phone).Scan(&user.ID, &user.UserName, &user.Email, &user.Phone)
+	var userModel model.User
+	err := u.pgxPool.QueryRow(ctx, "SELECT id, username, email, phone FROM users WHERE phone = $1", phone).
+		Scan(&userModel.ID, &userModel.UserName, &userModel.Email, &userModel.Phone)
 	if err != nil {
 		return model.User{}, err
 	}
-	return user, nil
+	return userModel, nil
 }
 
 func (u *UserRepositoryImpl) GetUserByUsername(ctx context.Context, username string) (model.User, error) {
-	var user model.User
-	err := u.pgxPool.QueryRow(ctx, "SELECT id, username, email, phone FROM users WHERE username = $1", username).Scan(&user.ID, &user.UserName, &user.Email, &user.Phone)
+	var userModel model.User
+	err := u.pgxPool.QueryRow(ctx, "SELECT id, username, email, phone, password FROM users WHERE username = $1", username).
+		Scan(&userModel.ID, &userModel.UserName, &userModel.Email, &userModel.Phone, &userModel.Password)
 	if err != nil {
 		return model.User{}, err
 	}
-	return user, nil
+	fmt.Println(userModel)
+	return userModel, nil
 }
 
 func (u *UserRepositoryImpl) DeleteUser(ctx context.Context, input user.GetUserDTI) (bool, error) {

@@ -64,3 +64,8 @@ type GetUsersWithPaginationDTI struct {
 	Limit int    `json:"limit"`
 	Page  int    `json:"page"`
 }
+
+type LoginUserDTI struct {
+	UserName string `json:"username"`
+	Password string `json:"password"`
+}

@@ -1,6 +1,6 @@
 package requests
 
-type AuthRequest struct {
+type AuthLoginRequest struct {
 	UserName string `json:"username" validate:"required,min=3,max=32"`
 	Password string `json:"password"`
 }

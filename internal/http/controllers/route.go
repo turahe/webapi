@@ -42,6 +42,8 @@ func RegisterRoute(r *fiber.App) {
 	authApi := v1.Group("/auth")
 	registerHandler := httpAuth.NewRegisterHTTPHandler(userApp)
 	authApi.Post("/register", registerHandler.Register)
+	loginHandler := httpAuth.NewLoginHTTPHandler(userApp)
+	authApi.Post("/login", loginHandler.Login)
 
 	// Queue API
 	queueAPI := v1.Group("/queues")
