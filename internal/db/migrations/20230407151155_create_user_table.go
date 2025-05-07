@@ -15,7 +15,7 @@ var createUserTable = &Migration{
 	Up: func() error {
 		_, err := pgx.GetPgxPool().Exec(context.Background(), `
 			CREATE TABLE users (
-				"id" UUID PRIMARY KEY,
+				"id" UUID NOT NULL,
 				"username" VARCHAR(255) NOT NULL,
 				"email" VARCHAR(255) NOT NULL UNIQUE,
 			    "phone" VARCHAR(255) NULL UNIQUE,
@@ -24,7 +24,8 @@ var createUserTable = &Migration{
 			    "phone_verified_at" TIMESTAMP NULL,
 			    "created_at" TIMESTAMP DEFAULT NOW(),
 			    "updated_at" TIMESTAMP DEFAULT NOW(),
-			    "deleted_at" TIMESTAMP NULL
+			    "deleted_at" TIMESTAMP NULL,
+			    CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 			);
 
 		`)

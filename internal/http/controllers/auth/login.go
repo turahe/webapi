@@ -20,7 +20,7 @@ func NewLoginHTTPHandler(app user.UserApp) *LoginHTTPHandler {
 func (h *LoginHTTPHandler) Login(c *fiber.Ctx) error {
 	var req requests.AuthLoginRequest
 	if err := c.BodyParser(&req); err != nil {
-		return c.Status(400).JSON(fiber.Map{
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
 			"message": err.Error(),
 		})
 	}

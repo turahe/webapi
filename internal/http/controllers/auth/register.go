@@ -21,7 +21,7 @@ func NewRegisterHTTPHandler(app user.UserApp) *RegisterHTTPHandler {
 func (h *RegisterHTTPHandler) Register(c *fiber.Ctx) error {
 	var req requests.AuthRegisterRequest
 	if err := c.BodyParser(&req); err != nil {
-		return c.Status(400).JSON(fiber.Map{
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
 			"message": err.Error(),
 		})
 	}

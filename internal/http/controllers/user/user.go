@@ -4,7 +4,7 @@ import (
 	"errors"
 	"github.com/google/uuid"
 	"net/http"
-	dto "webapi/internal/dto"
+	dti "webapi/internal/dto"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
@@ -29,7 +29,7 @@ func (h *UserHTTPHandler) GetUsers(c *fiber.Ctx) error {
 	query := c.Query("query", "")    // Default to empty string if not provided
 
 	offset := (page - 1) * limit
-	req := dto.GetUsersWithPaginationDTI{
+	req := dti.GetUsersWithPaginationDTI{
 		Query: query,
 		Limit: limit,
 		Page:  offset,
@@ -61,7 +61,7 @@ func (h *UserHTTPHandler) GetUserByID(c *fiber.Ctx) error {
 		return exception.InvalidIDError
 	}
 
-	userDto, err := h.app.GetUserByID(c.Context(), dto.GetUserDTI{ID: id})
+	userDto, err := h.app.GetUserByID(c.Context(), dti.GetUserDTI{ID: id})
 	if err != nil {
 		return err
 	}
@@ -74,7 +74,7 @@ func (h *UserHTTPHandler) GetUserByID(c *fiber.Ctx) error {
 }
 
 func (h *UserHTTPHandler) CreateUser(c *fiber.Ctx) error {
-	var req dto.CreateUserDTI
+	var req dti.CreateUserDTI
 
 	// Parse the request body
 	if err := c.BodyParser(&req); err != nil {
@@ -91,7 +91,7 @@ func (h *UserHTTPHandler) CreateUser(c *fiber.Ctx) error {
 	}
 
 	// Process the business logic
-	dto, err := h.app.CreateUser(c.Context(), dto.CreateUserDTI{
+	dto, err := h.app.CreateUser(c.Context(), dti.CreateUserDTI{
 		UserName: req.UserName,
 		Email:    req.Email,
 		Phone:    req.Phone,
@@ -116,7 +116,7 @@ func (h *UserHTTPHandler) UpdateUser(c *fiber.Ctx) error {
 		return exception.InvalidIDError
 	}
 
-	var req dto.UpdateUserDTI
+	var req dti.UpdateUserDTI
 
 	// Parse the request body
 	if err := c.BodyParser(&req); err != nil {
@@ -132,7 +132,7 @@ func (h *UserHTTPHandler) UpdateUser(c *fiber.Ctx) error {
 		}
 	}
 
-	dto, err := h.app.UpdateUser(c.Context(), dto.UpdateUserDTI{
+	dto, err := h.app.UpdateUser(c.Context(), dti.UpdateUserDTI{
 		ID:       id,
 		UserName: req.UserName,
 		Email:    req.Email,
@@ -158,7 +158,7 @@ func (h *UserHTTPHandler) DeleteUser(c *fiber.Ctx) error {
 		return exception.InvalidIDError
 	}
 
-	_, err = h.app.DeleteUser(c.Context(), dto.DeleteUserDTI{ID: id})
+	_, err = h.app.DeleteUser(c.Context(), dti.DeleteUserDTI{ID: id})
 	if err != nil {
 		return err
 	}

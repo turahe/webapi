@@ -8,7 +8,7 @@ import (
 
 // Centralized error handler for all routes
 func ErrorHandler(c *fiber.Ctx, err error) error {
-	// Retrieve neccessary details
+	// Retrieve necessary details
 	// Status code defaults to 500
 	responseCode := fiber.StatusInternalServerError
 	responseMessage := err.Error()
