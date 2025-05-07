@@ -18,7 +18,7 @@ This boilerplate is intended to be used as a starting point for a go application
 ### Installation
 1. Clone the repo
    ```sh
-   git clone https://github.com/turahe/interpesona-data.git
+   git clone https://webapi.git
     ```
 2. Install Go dependencies
     ```sh

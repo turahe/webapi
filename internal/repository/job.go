@@ -7,7 +7,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/turahe/interpesona-data/internal/db/model"
+	"webapi/internal/db/model"
 )
 
 type JobRepository interface {

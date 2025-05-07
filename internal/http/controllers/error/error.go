@@ -2,8 +2,8 @@ package error
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/turahe/interpesona-data/internal/http/response"
-	"github.com/turahe/interpesona-data/pkg/exception"
+	"webapi/internal/http/response"
+	"webapi/pkg/exception"
 )
 
 // Centralized error handler for all routes

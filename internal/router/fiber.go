@@ -8,10 +8,10 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/idempotency"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/gofiber/fiber/v2/middleware/requestid"
-	"github.com/turahe/interpesona-data/internal/router/middleware"
+	"webapi/internal/router/middleware"
 
-	httpInterface "github.com/turahe/interpesona-data/internal/http/controllers"
-	httpError "github.com/turahe/interpesona-data/internal/http/controllers/error"
+	httpInterface "webapi/internal/http/controllers"
+	httpError "webapi/internal/http/controllers/error"
 )
 
 func NewFiberRouter() *fiber.App {

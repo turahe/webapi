@@ -2,7 +2,7 @@ package response
 
 import (
 	"github.com/bytedance/sonic"
-	"github.com/turahe/interpesona-data/pkg/exception"
+	"webapi/pkg/exception"
 )
 
 type DataUnwrapper interface {

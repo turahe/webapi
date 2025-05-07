@@ -4,8 +4,8 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/turahe/interpesona-data/internal/logger"
 	"go.uber.org/zap"
+	"webapi/internal/logger"
 )
 
 func Logger() fiber.Handler {

@@ -3,8 +3,8 @@ package queue
 import (
 	"context"
 
-	"github.com/turahe/interpesona-data/internal/helper/queue"
-	"github.com/turahe/interpesona-data/internal/repository"
+	"webapi/internal/helper/queue"
+	"webapi/internal/repository"
 )
 
 type QueueApp interface {

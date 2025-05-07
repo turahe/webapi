@@ -11,10 +11,10 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/turahe/interpesona-data/config"
-	"github.com/turahe/interpesona-data/internal/http/validation"
-	"github.com/turahe/interpesona-data/internal/logger"
-	"github.com/turahe/interpesona-data/internal/router"
+	"webapi/config"
+	"webapi/internal/http/validation"
+	"webapi/internal/logger"
+	"webapi/internal/router"
 )
 
 func init() {

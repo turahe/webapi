@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	"github.com/turahe/interpesona-data/build"
-	"github.com/turahe/interpesona-data/version"
+	"webapi/build"
+	"webapi/version"
 )
 
 func init() {

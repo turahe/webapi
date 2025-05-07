@@ -6,7 +6,7 @@ import (
 	_ "time/tzdata"
 
 	"github.com/go-co-op/gocron"
-	"github.com/turahe/interpesona-data/config"
+	"webapi/config"
 )
 
 var Timezone = time.Now().Location()

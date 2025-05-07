@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/turahe/interpesona-data/internal/logger"
 	"go.uber.org/zap"
+	"webapi/internal/logger"
 )
 
 type PaginationDTI struct {

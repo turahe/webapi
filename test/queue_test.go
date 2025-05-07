@@ -12,10 +12,10 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/turahe/interpesona-data/internal/db/model"
-	"github.com/turahe/interpesona-data/internal/db/rdb"
-	"github.com/turahe/interpesona-data/internal/helper/queue"
-	"github.com/turahe/interpesona-data/internal/job"
+	"webapi/internal/db/model"
+	"webapi/internal/db/rdb"
+	"webapi/internal/helper/queue"
+	"webapi/internal/job"
 )
 
 func TestQueue(t *testing.T) {

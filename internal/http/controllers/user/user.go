@@ -3,15 +3,15 @@ package user
 import (
 	"errors"
 	"github.com/google/uuid"
-	dto "github.com/turahe/interpesona-data/internal/dto"
 	"net/http"
+	dto "webapi/internal/dto"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
-	"github.com/turahe/interpesona-data/internal/app/user"
-	"github.com/turahe/interpesona-data/internal/http/response"
-	"github.com/turahe/interpesona-data/internal/http/validation"
-	"github.com/turahe/interpesona-data/pkg/exception"
+	"webapi/internal/app/user"
+	"webapi/internal/http/response"
+	"webapi/internal/http/validation"
+	"webapi/pkg/exception"
 )
 
 type UserHTTPHandler struct {

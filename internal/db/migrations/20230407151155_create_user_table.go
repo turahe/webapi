@@ -3,7 +3,7 @@ package migrations
 import (
 	"context"
 
-	"github.com/turahe/interpesona-data/internal/db/pgx"
+	"webapi/internal/db/pgx"
 )
 
 func init() {

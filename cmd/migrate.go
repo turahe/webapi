@@ -6,11 +6,11 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"github.com/turahe/interpesona-data/config"
-	"github.com/turahe/interpesona-data/internal/db/migrations"
-	"github.com/turahe/interpesona-data/internal/db/pgx"
-	"github.com/turahe/interpesona-data/internal/logger"
 	"go.uber.org/zap"
+	"webapi/config"
+	"webapi/internal/db/migrations"
+	"webapi/internal/db/pgx"
+	"webapi/internal/logger"
 )
 
 func init() {

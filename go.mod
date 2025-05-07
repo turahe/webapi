@@ -1,4 +1,4 @@
-module github.com/turahe/interpesona-data
+module webapi
 
 go 1.24.0
 

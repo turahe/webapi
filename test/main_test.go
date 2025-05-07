@@ -8,13 +8,13 @@ import (
 
 	"github.com/gavv/httpexpect/v2"
 	"github.com/gofiber/fiber/v2"
-	"github.com/turahe/interpesona-data/config"
-	"github.com/turahe/interpesona-data/internal/db/pgx"
-	"github.com/turahe/interpesona-data/internal/db/rdb"
-	"github.com/turahe/interpesona-data/internal/logger"
-	"github.com/turahe/interpesona-data/internal/repository"
-	"github.com/turahe/interpesona-data/internal/router"
 	"github.com/valyala/fasthttp"
+	"webapi/config"
+	"webapi/internal/db/pgx"
+	"webapi/internal/db/rdb"
+	"webapi/internal/logger"
+	"webapi/internal/repository"
+	"webapi/internal/router"
 )
 
 var r *fiber.App

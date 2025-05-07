@@ -2,9 +2,9 @@ package queue
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/turahe/interpesona-data/internal/app/queue"
-	"github.com/turahe/interpesona-data/internal/http/response"
 	"net/http"
+	"webapi/internal/app/queue"
+	"webapi/internal/http/response"
 )
 
 type QueueHTTPHandler struct {

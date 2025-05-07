@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/google/uuid"
-	"github.com/turahe/interpesona-data/internal/db/rdb"
+	"webapi/internal/db/rdb"
 )
 
 const (

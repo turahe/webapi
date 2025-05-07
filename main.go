@@ -4,9 +4,9 @@ import (
 	"log"
 	"os"
 
-	"github.com/turahe/interpesona-data/cmd"
-	"github.com/turahe/interpesona-data/internal/db/pgx"
-	"github.com/turahe/interpesona-data/internal/logger"
+	"webapi/cmd"
+	"webapi/internal/db/pgx"
+	"webapi/internal/logger"
 
 	"go.uber.org/automaxprocs/maxprocs"
 )

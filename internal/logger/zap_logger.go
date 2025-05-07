@@ -3,10 +3,10 @@ package logger
 import (
 	"os"
 
-	"github.com/turahe/interpesona-data/config"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
+	"webapi/config"
 )
 
 func newZapLogger() *zap.Logger {

@@ -3,9 +3,9 @@ package logger_test
 import (
 	"testing"
 
-	"github.com/turahe/interpesona-data/config"
-	. "github.com/turahe/interpesona-data/internal/logger"
 	"go.uber.org/zap/zapcore"
+	"webapi/config"
+	. "webapi/internal/logger"
 )
 
 func init() {

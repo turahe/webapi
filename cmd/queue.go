@@ -10,11 +10,11 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/spf13/cobra"
-	"github.com/turahe/interpesona-data/internal/helper/queue"
-	"github.com/turahe/interpesona-data/internal/job"
-	"github.com/turahe/interpesona-data/internal/logger"
-	"github.com/turahe/interpesona-data/internal/repository"
 	"go.uber.org/zap"
+	"webapi/internal/helper/queue"
+	"webapi/internal/job"
+	"webapi/internal/logger"
+	"webapi/internal/repository"
 )
 
 func init() {

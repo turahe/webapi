@@ -9,11 +9,11 @@ import (
 
 	"github.com/getsentry/sentry-go"
 	"github.com/spf13/cobra"
-	"github.com/turahe/interpesona-data/config"
-	"github.com/turahe/interpesona-data/internal/db/pgx"
-	"github.com/turahe/interpesona-data/internal/db/rdb"
-	"github.com/turahe/interpesona-data/internal/logger"
 	"go.uber.org/zap"
+	"webapi/config"
+	"webapi/internal/db/pgx"
+	"webapi/internal/db/rdb"
+	"webapi/internal/logger"
 )
 
 const defaultConfigFile = "config/config.yaml"

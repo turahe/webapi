@@ -3,11 +3,11 @@ package user
 import (
 	"context"
 	"github.com/google/uuid"
-	user "github.com/turahe/interpesona-data/internal/dto"
+	user "webapi/internal/dto"
 
-	"github.com/turahe/interpesona-data/internal/db/model"
-	"github.com/turahe/interpesona-data/internal/repository"
-	"github.com/turahe/interpesona-data/pkg/exception"
+	"webapi/internal/db/model"
+	"webapi/internal/repository"
+	"webapi/pkg/exception"
 )
 
 type UserApp interface {

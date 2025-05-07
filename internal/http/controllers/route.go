@@ -2,15 +2,15 @@ package httpapi
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/turahe/interpesona-data/internal/app/queue"
-	"github.com/turahe/interpesona-data/internal/app/user"
-	"github.com/turahe/interpesona-data/internal/repository"
+	"webapi/internal/app/queue"
+	"webapi/internal/app/user"
+	"webapi/internal/repository"
 
-	httpAuth "github.com/turahe/interpesona-data/internal/http/controllers/auth"
-	httpHealthz "github.com/turahe/interpesona-data/internal/http/controllers/healthz"
-	httpMiscellaneous "github.com/turahe/interpesona-data/internal/http/controllers/miscellaneous"
-	httpQueue "github.com/turahe/interpesona-data/internal/http/controllers/queue"
-	httpUser "github.com/turahe/interpesona-data/internal/http/controllers/user"
+	httpAuth "webapi/internal/http/controllers/auth"
+	httpHealthz "webapi/internal/http/controllers/healthz"
+	httpMiscellaneous "webapi/internal/http/controllers/miscellaneous"
+	httpQueue "webapi/internal/http/controllers/queue"
+	httpUser "webapi/internal/http/controllers/user"
 )
 
 // ====================================================

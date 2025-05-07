@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"github.com/turahe/interpesona-data/internal/db/pgx"
-	"github.com/turahe/interpesona-data/internal/db/rdb"
+	"webapi/internal/db/pgx"
+	"webapi/internal/db/rdb"
 )
 
 type Repository struct {

@@ -6,9 +6,9 @@ import (
 	"sync"
 
 	"github.com/redis/go-redis/v9"
-	"github.com/turahe/interpesona-data/config"
-	"github.com/turahe/interpesona-data/internal/logger"
 	"go.uber.org/zap"
+	"webapi/config"
+	"webapi/internal/logger"
 )
 
 var rdb redis.Cmdable

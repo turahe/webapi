@@ -2,13 +2,13 @@ package auth
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/turahe/interpesona-data/internal/app/user"
-	//model "github.com/turahe/interpesona-data/internal/db/model"
-	dto "github.com/turahe/interpesona-data/internal/dto"
-	password "github.com/turahe/interpesona-data/internal/helper/utils"
-	"github.com/turahe/interpesona-data/internal/http/requests"
-	"github.com/turahe/interpesona-data/internal/http/response"
+	"webapi/internal/app/user"
+	//model "webapi/internal/db/model"
 	"net/http"
+	dto "webapi/internal/dto"
+	password "webapi/internal/helper/utils"
+	"webapi/internal/http/requests"
+	"webapi/internal/http/response"
 )
 
 type RegisterHTTPHandler struct {

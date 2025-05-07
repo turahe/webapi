@@ -2,7 +2,7 @@ package miscellaneous
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/turahe/interpesona-data/pkg/exception"
+	"webapi/pkg/exception"
 )
 
 type MiscellaneousHTTPHandler struct{}

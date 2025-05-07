@@ -4,14 +4,14 @@ import (
 	"context"
 	"fmt"
 	"github.com/google/uuid"
-	"github.com/turahe/interpesona-data/internal/dto"
 	"time"
+	"webapi/internal/dto"
 
 	"github.com/bytedance/sonic"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/redis/go-redis/v9"
-	"github.com/turahe/interpesona-data/internal/db/model"
-	"github.com/turahe/interpesona-data/internal/helper/cache"
+	"webapi/internal/db/model"
+	"webapi/internal/helper/cache"
 )
 
 type UserRepository interface {

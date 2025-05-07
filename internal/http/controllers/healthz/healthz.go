@@ -2,8 +2,8 @@ package healthz
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/turahe/interpesona-data/internal/http/response"
 	"net/http"
+	"webapi/internal/http/response"
 )
 
 type HealthzHTTPHandler struct{}

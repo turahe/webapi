@@ -7,9 +7,9 @@ import (
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/turahe/interpesona-data/config"
-	"github.com/turahe/interpesona-data/internal/logger"
 	"go.uber.org/zap"
+	"webapi/config"
+	"webapi/internal/logger"
 )
 
 var pgxPool *pgxpool.Pool

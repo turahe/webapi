@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/turahe/interpesona-data/internal/db/rdb"
+	"webapi/internal/db/rdb"
 )
 
 // Set sets a key-value pair with an expiration time.

@@ -7,8 +7,8 @@ import (
 
 	"github.com/iancoleman/strcase"
 	"github.com/spf13/cobra"
-	"github.com/turahe/interpesona-data/internal/logger"
 	"go.uber.org/zap"
+	"webapi/internal/logger"
 )
 
 func init() {

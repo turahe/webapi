@@ -6,8 +6,8 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/stretchr/testify/assert"
-	"github.com/turahe/interpesona-data/internal/http/validation"
-	. "github.com/turahe/interpesona-data/pkg/exception"
+	"webapi/internal/http/validation"
+	. "webapi/pkg/exception"
 )
 
 func Test_NewValidationFailedErrors(t *testing.T) {

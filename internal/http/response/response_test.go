@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	. "github.com/turahe/interpesona-data/internal/http/response"
+	. "webapi/internal/http/response"
 )
 
 func TestCommonResponse_JSONMarshalling(t *testing.T) {

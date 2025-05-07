@@ -9,12 +9,12 @@ import (
 	"github.com/bytedance/sonic"
 	"github.com/google/uuid"
 	"github.com/redis/go-redis/v9"
-	"github.com/turahe/interpesona-data/internal/db/model"
-	"github.com/turahe/interpesona-data/internal/db/rdb"
-	"github.com/turahe/interpesona-data/internal/job"
-	"github.com/turahe/interpesona-data/internal/logger"
-	"github.com/turahe/interpesona-data/internal/repository"
 	"go.uber.org/zap"
+	"webapi/internal/db/model"
+	"webapi/internal/db/rdb"
+	"webapi/internal/job"
+	"webapi/internal/logger"
+	"webapi/internal/repository"
 )
 
 /*
