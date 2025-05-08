@@ -33,11 +33,20 @@ Redis:
     password: ""
     db: 0
 
+minio:
+  enable: false
+  endpoint: '127.0.0.1:9000'
+  accessKeyID: 'minioadmin'
+  secretAccessKey: 'minioadmin'
+  useSSL: false
+  bucket: 'my-bucket'
+
 sentry:
   dsn: ""
   environment: "DEV"
   release: "webapi@v0.1.0"
   debug: false
+
 
 scheduler:
   timezone: "Asia/Jakarta" # Timezone for cron jobs

@@ -29,7 +29,7 @@ func (h *UserHTTPHandler) GetUsers(c *fiber.Ctx) error {
 	query := c.Query("query", "")    // Default to empty string if not provided
 
 	offset := (page - 1) * limit
-	req := dti.GetUsersWithPaginationDTI{
+	req := dti.DataWithPaginationDTI{
 		Query: query,
 		Limit: limit,
 		Page:  offset,

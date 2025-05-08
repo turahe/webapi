@@ -1,4 +1,4 @@
-package user
+package dto
 
 import (
 	"github.com/google/uuid"
@@ -12,13 +12,6 @@ type GetUserDTO struct {
 	Phone     string    `json:"phone"`
 	CreatedAt time.Time `json:"createdAt"`
 	UpdatedAt time.Time `json:"updatedAt"`
-}
-type GetUsersWithPaginationDTO struct {
-	Total       int          `json:"total"`
-	Limit       int          `json:"limit"`
-	CurrentPage int          `json:"currentPage"`
-	LastPage    int          `json:"lastPage"`
-	Data        []GetUserDTO `json:"data"`
 }
 
 type UpdateUserDTO struct {
@@ -57,12 +50,6 @@ type CreateUserDTO struct {
 
 type DeleteUserDTI struct {
 	ID uuid.UUID `json:"id"`
-}
-
-type GetUsersWithPaginationDTI struct {
-	Query string `json:"query"`
-	Limit int    `json:"limit"`
-	Page  int    `json:"page"`
 }
 
 type LoginUserDTI struct {

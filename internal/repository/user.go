@@ -17,13 +17,13 @@ import (
 type UserRepository interface {
 	GetUsers(ctx context.Context) ([]model.User, error)
 	AddUser(ctx context.Context, user model.User) (model.User, error)
-	GetUserByID(ctx context.Context, input user.GetUserDTI) (model.User, error)
+	GetUserByID(ctx context.Context, input dto.GetUserDTI) (model.User, error)
 	GetUserByEmail(ctx context.Context, email string) (model.User, error)
 	GetUserByPhone(ctx context.Context, phone string) (model.User, error)
 	GetUserByUsername(ctx context.Context, username string) (model.User, error)
-	GetUsersWithPagination(ctx context.Context, input user.GetUsersWithPaginationDTI) (user.GetUsersWithPaginationDTO, error)
+	GetUsersWithPagination(ctx context.Context, input dto.DataWithPaginationDTI) (dto.DataWithPaginationDTO, error)
 	UpdateUser(ctx context.Context, user model.User) (model.User, error)
-	DeleteUser(ctx context.Context, input user.GetUserDTI) (bool, error)
+	DeleteUser(ctx context.Context, input dto.GetUserDTI) (bool, error)
 	IsUserEmailExist(ctx context.Context, email string) (bool, error)
 	IsUserPhoneExist(ctx context.Context, phone string) (bool, error)
 	SearchUser(ctx context.Context, query string) ([]model.User, error)
@@ -106,7 +106,7 @@ func (u *UserRepositoryImpl) SearchUser(ctx context.Context, query string) ([]mo
 	return users, nil
 }
 
-func (u *UserRepositoryImpl) GetUserByID(ctx context.Context, input user.GetUserDTI) (model.User, error) {
+func (u *UserRepositoryImpl) GetUserByID(ctx context.Context, input dto.GetUserDTI) (model.User, error) {
 	var userModel model.User
 	err := u.pgxPool.QueryRow(ctx, "SELECT id, username, email, phone FROM users WHERE id = $1 AND deleted_at IS NULL ", input.ID).
 		Scan(&userModel.ID, &userModel.UserName, &userModel.Email, &userModel.Phone)
@@ -116,7 +116,7 @@ func (u *UserRepositoryImpl) GetUserByID(ctx context.Context, input user.GetUser
 	return userModel, nil
 }
 
-func (u *UserRepositoryImpl) GetUsersWithPagination(ctx context.Context, input user.GetUsersWithPaginationDTI) (user.GetUsersWithPaginationDTO, error) {
+func (u *UserRepositoryImpl) GetUsersWithPagination(ctx context.Context, input dto.DataWithPaginationDTI) (dto.DataWithPaginationDTO, error) {
 	var users []model.User
 	var totalUsers int
 	var query = input.Query
@@ -129,7 +129,7 @@ func (u *UserRepositoryImpl) GetUsersWithPagination(ctx context.Context, input u
 	WHERE username ILIKE $1 OR email ILIKE $1 OR phone ILIKE $1
 	LIMIT $2 OFFSET $3`, fmt.Sprintf("%%%s%%", query), limit, page)
 	if err != nil {
-		return user.GetUsersWithPaginationDTO{}, err
+		return dto.DataWithPaginationDTO{}, err
 	}
 	defer rows.Close()
 
@@ -137,7 +137,7 @@ func (u *UserRepositoryImpl) GetUsersWithPagination(ctx context.Context, input u
 		var userModel model.User
 		err = rows.Scan(&userModel.ID, &userModel.UserName, &userModel.Email, &userModel.Phone, &userModel.CreatedAt, &userModel.UpdatedAt)
 		if err != nil {
-			return user.GetUsersWithPaginationDTO{}, err
+			return dto.DataWithPaginationDTO{}, err
 		}
 		users = append(users, userModel)
 	}
@@ -148,13 +148,13 @@ func (u *UserRepositoryImpl) GetUsersWithPagination(ctx context.Context, input u
 		FROM users 
 		WHERE username ILIKE $1 OR email ILIKE $1 OR phone ILIKE $1`, fmt.Sprintf("%%%s%%", query)).Scan(&totalUsers)
 	if err != nil {
-		return user.GetUsersWithPaginationDTO{}, err
+		return dto.DataWithPaginationDTO{}, err
 	}
 
 	// Iterate through rows and append to users slice
-	var userDTOs []user.GetUserDTO
+	var userDTOs []interface{}
 	for _, u := range users {
-		userDTOs = append(userDTOs, user.GetUserDTO{
+		userDTOs = append(userDTOs, dto.GetUserDTO{
 			ID:        u.ID,
 			UserName:  u.UserName,
 			Email:     u.Email,
@@ -169,7 +169,7 @@ func (u *UserRepositoryImpl) GetUsersWithPagination(ctx context.Context, input u
 	lastPage := (totalUsers + limit - 1) / limit
 
 	// Prepare response
-	responseUser := user.GetUsersWithPaginationDTO{
+	responseUser := dto.DataWithPaginationDTO{
 		Total:       totalUsers,
 		Limit:       limit,
 		Data:        userDTOs,
@@ -266,7 +266,7 @@ func (u *UserRepositoryImpl) GetUserByUsername(ctx context.Context, username str
 	return userModel, nil
 }
 
-func (u *UserRepositoryImpl) DeleteUser(ctx context.Context, input user.GetUserDTI) (bool, error) {
+func (u *UserRepositoryImpl) DeleteUser(ctx context.Context, input dto.GetUserDTI) (bool, error) {
 	tx, err := u.pgxPool.Begin(ctx)
 	if err != nil {
 		return false, err

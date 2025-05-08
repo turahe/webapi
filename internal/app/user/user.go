@@ -15,7 +15,7 @@ import (
 type UserApp interface {
 	Login(ctx context.Context, dti user.LoginUserDTI) (user.GetUserDTO, error)
 	GetUsers(ctx context.Context) ([]user.GetUserDTO, error)
-	GetUsersWithPagination(ctx context.Context, input user.GetUsersWithPaginationDTI) (user.GetUsersWithPaginationDTO, error)
+	GetUsersWithPagination(ctx context.Context, input user.DataWithPaginationDTI) (user.DataWithPaginationDTO, error)
 	GetUserByID(ctx context.Context, input user.GetUserDTI) (user.GetUserDTO, error)
 	CreateUser(ctx context.Context, input user.CreateUserDTI) (user.GetUserDTO, error)
 	UpdateUser(ctx context.Context, input user.UpdateUserDTI) (user.GetUserDTO, error)
@@ -77,10 +77,10 @@ func (s *userApp) GetUsers(ctx context.Context) ([]user.GetUserDTO, error) {
 	return usersDTO, nil
 }
 
-func (s *userApp) GetUsersWithPagination(ctx context.Context, input user.GetUsersWithPaginationDTI) (user.GetUsersWithPaginationDTO, error) {
+func (s *userApp) GetUsersWithPagination(ctx context.Context, input user.DataWithPaginationDTI) (user.DataWithPaginationDTO, error) {
 	responseUser, err := s.Repo.User.GetUsersWithPagination(ctx, input)
 	if err != nil {
-		return user.GetUsersWithPaginationDTO{}, err
+		return user.DataWithPaginationDTO{}, err
 	}
 
 	return responseUser, nil

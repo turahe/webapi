@@ -19,6 +19,7 @@ type Config struct {
 	Scheduler  Scheduler  `yaml:"scheduler"`
 	Schedules  []Schedule `yaml:"schedules"`
 	Postgres   Postgres   `yaml:"postgres"`
+	Minio      Minio      `yaml:"minio"`
 	Redis      []Redis    `yaml:"redis"`
 	Sentry     Sentry     `yaml:"sentry"`
 }
@@ -64,6 +65,16 @@ type Redis struct {
 	Port     int    `yaml:"port"`
 	Password string `yaml:"password"`
 	Database int    `yaml:"database"`
+}
+
+type Minio struct {
+	Enable          bool   `yaml:"enable"`
+	Endpoint        string `yaml:"endpoint"`
+	AccessKeyID     string `yaml:"accessKeyID"`
+	AccessKeySecret string `yaml:"accessKeySecret"`
+	UseSSL          bool   `yaml:"useSSL"`
+	BucketName      string `yaml:"bucketName"`
+	Region          string `yaml:"region"`
 }
 
 type Sentry struct {
