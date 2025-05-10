@@ -4,7 +4,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"net/http"
 	"webapi/internal/app/user"
-	dti "webapi/internal/dto"
 	"webapi/internal/http/requests"
 	"webapi/internal/http/response"
 )
@@ -25,7 +24,7 @@ func (h *LoginHTTPHandler) Login(c *fiber.Ctx) error {
 		})
 	}
 	// Process the business logic
-	dto, err := h.app.Login(c.Context(), dti.LoginUserDTI{
+	dto, err := h.app.Login(c.Context(), requests.AuthLoginRequest{
 		UserName: req.UserName,
 		Password: req.Password,
 	})

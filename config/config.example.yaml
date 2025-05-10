@@ -41,6 +41,7 @@ minio:
   useSSL: false
   bucket: 'my-bucket'
 
+
 sentry:
   dsn: ""
   environment: "DEV"

@@ -3,7 +3,7 @@ package media
 import (
 	"github.com/gofiber/fiber/v2"
 	"webapi/internal/app/media"
-	dti "webapi/internal/dto"
+	"webapi/internal/http/requests"
 	"webapi/internal/http/response"
 )
 
@@ -21,7 +21,7 @@ func (h *MediaHttpHandler) CreateMedia(c *fiber.Ctx) error {
 	query := c.Query("query", "")    // Default to empty string if not provided
 
 	offset := (page - 1) * limit
-	req := dti.DataWithPaginationDTI{
+	req := requests.DataWithPaginationRequest{
 		Query: query,
 		Limit: limit,
 		Page:  offset,

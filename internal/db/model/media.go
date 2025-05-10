@@ -11,7 +11,7 @@ type Media struct {
 	Hash             string    `json:"hash"`
 	FileName         string    `json:"fileName"`
 	Disk             string    `json:"disk"`
-	Size             float64   `json:"size"`
+	Size             int64     `json:"size"`
 	MimeType         string    `json:"mimeType"`
 	CustomAttributes string    `json:"customAttributes"`
 	RecordLeft       uint64    `json:"recordLeft"`

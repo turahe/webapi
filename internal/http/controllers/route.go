@@ -37,6 +37,10 @@ func RegisterRoute(r *fiber.App) {
 	userAPI.Post("/", userHandler.CreateUser)
 	userAPI.Put("/:id", userHandler.UpdateUser)
 	userAPI.Delete("/:id", userHandler.DeleteUser)
+	userAPI.Post("/change-password", userHandler.ChangePassword)
+	userAPI.Post("/change-username", userHandler.ChangeUserName)
+	userAPI.Post("/change-phone", userHandler.ChangePhone)
+	userAPI.Post("/change-email", userHandler.ChangeEmail)
 
 	// auth
 	authApi := v1.Group("/auth")

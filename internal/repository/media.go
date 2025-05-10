@@ -2,11 +2,13 @@ package repository
 
 import (
 	"context"
+	"fmt"
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/redis/go-redis/v9"
 	"webapi/internal/db/model"
 	"webapi/internal/dto"
+	"webapi/internal/http/requests"
 )
 
 type MediaRepository interface {
@@ -16,7 +18,7 @@ type MediaRepository interface {
 	GetMediaByFileName(ctx context.Context, fileName string) (model.Media, error)
 	UpdateMedia(ctx context.Context, media model.Media) (model.Media, error)
 	GetMediaByParentID(ctx context.Context, parentID uuid.UUID) ([]model.Media, error)
-	GetMediaWithPagination(ctx context.Context, input dto.DataWithPaginationDTI) (dto.DataWithPaginationDTO, error)
+	GetMediaWithPagination(ctx context.Context, input requests.DataWithPaginationRequest) (dto.DataWithPaginationDTO, error)
 	GetMediaByParentIDWithPagination(ctx context.Context, parentID uuid.UUID, page int, limit int) ([]model.Media, error)
 	CreateMedia(ctx context.Context, media model.Media) (model.Media, error)
 	DeleteMedia(ctx context.Context, media model.Media) (bool, error)
@@ -163,14 +165,17 @@ func (m *MediaRepositoryImpl) GetMediaByParentID(ctx context.Context, parentID u
 	return media, nil
 }
 
-func (m *MediaRepositoryImpl) GetMediaWithPagination(ctx context.Context, input dto.DataWithPaginationDTI) (dto.DataWithPaginationDTO, error) {
+func (m *MediaRepositoryImpl) GetMediaWithPagination(ctx context.Context, input requests.DataWithPaginationRequest) (dto.DataWithPaginationDTO, error) {
 	var media []model.Media
-	var totalUsers int
+	var totalMedia int
 	var query = input.Query
 	var limit = input.Limit
 	var page = input.Page
 
-	rows, err := m.pgxPool.Query(ctx, "SELECT id, name, hash, file_name, disk, size, mime_type, record_left, record_right FROM media LIMIT $1 OFFSET $2", limit, (page-1)*limit)
+	rows, err := m.pgxPool.Query(ctx, `
+	SELECT id, name, hash, file_name, disk, size, mime_type, record_left, record_right FROM media
+	WHERE name ILIKE $1 OR file_name ILIKE $1
+	LIMIT $2 OFFSET $3`, fmt.Sprintf("%%%s%%", query), limit, page)
 	if err != nil {
 		return dto.DataWithPaginationDTO{}, err
 	}
@@ -185,14 +190,35 @@ func (m *MediaRepositoryImpl) GetMediaWithPagination(ctx context.Context, input 
 		}
 		media = append(media, mediaModel)
 	}
+	// Query to get total user count with search functionality
+	err = m.pgxPool.QueryRow(ctx, `
+		SELECT COUNT(*) 
+		FROM users 
+		WHERE username ILIKE $1 OR email ILIKE $1 OR phone ILIKE $1`, fmt.Sprintf("%%%s%%", query)).Scan(&totalMedia)
+	if err != nil {
+		return dto.DataWithPaginationDTO{}, err
+	}
+
+	// Iterate through rows and append to users slice
+	var mediaDto []interface{}
+	for _, u := range media {
+		mediaDto = append(mediaDto, dto.GetMediaDTO{
+			ID:        u.ID,
+			FileName:  u.FileName,
+			Name:      u.Name,
+			Size:      u.Size,
+			CreatedAt: u.CreatedAt,
+			UpdatedAt: u.UpdatedAt,
+		})
+	}
 	// Calculate pagination details
 	currentPage := (page / limit) + 1
-	lastPage := (totalUsers + limit - 1) / limit
+	lastPage := (totalMedia + limit - 1) / limit
 	// Prepare response
 	responseMedia := dto.DataWithPaginationDTO{
-		Total:       totalUsers,
+		Total:       totalMedia,
 		Limit:       limit,
-		Data:        userDTOs,
+		Data:        mediaDto,
 		CurrentPage: currentPage,
 		LastPage:    lastPage,
 	}
@@ -267,4 +293,8 @@ func (m *MediaRepositoryImpl) DeleteMedia(ctx context.Context, media model.Media
 	}
 
 	return true, nil
+}
+
+func (m *MediaRepositoryImpl) CreateRelation(ctx context.Context, media model.Media) error {
+	return nil
 }

@@ -5,6 +5,7 @@ import (
 	"github.com/google/uuid"
 	"webapi/internal/db/model"
 	"webapi/internal/dto"
+	"webapi/internal/http/requests"
 	"webapi/internal/repository"
 )
 
@@ -15,7 +16,7 @@ type MediaApp interface {
 	GetMediaByFileName(ctx context.Context, fileName string) (model.Media, error)
 	UpdateMedia(ctx context.Context, media model.Media) (model.Media, error)
 	GetMediaByParentID(ctx context.Context, parentID uuid.UUID) ([]model.Media, error)
-	GetMediaWithPagination(ctx context.Context, dti dto.DataWithPaginationDTI) (dto.DataWithPaginationDTO, error)
+	GetMediaWithPagination(ctx context.Context, input requests.DataWithPaginationRequest) (dto.DataWithPaginationDTO, error)
 	GetMediaByParentIDWithPagination(ctx context.Context, parentID uuid.UUID, page int, limit int) ([]model.Media, error)
 	CreateMedia(ctx context.Context, media model.Media) (model.Media, error)
 	DeleteMedia(ctx context.Context, media model.Media) (bool, error)
@@ -84,7 +85,7 @@ func (m *mediaApp) GetMediaByParentIDWithPagination(ctx context.Context, parentI
 	}
 	return media, nil
 }
-func (m *mediaApp) GetMediaWithPagination(ctx context.Context, input dto.DataWithPaginationDTI) (dto.DataWithPaginationDTO, error) {
+func (m *mediaApp) GetMediaWithPagination(ctx context.Context, input requests.DataWithPaginationRequest) (dto.DataWithPaginationDTO, error) {
 	media, err := m.Repo.Media.GetMediaWithPagination(ctx, input)
 	if err != nil {
 		return dto.DataWithPaginationDTO{}, err

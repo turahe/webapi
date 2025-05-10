@@ -1,5 +1,5 @@
 services:
-  webapi:
+  api:
     build:
       context: .
       dockerfile: Dockerfile
@@ -11,6 +11,9 @@ services:
       - ./tmp:/app/tmp
     ports:
         - 8000:8000
+    networks:
+      - webapi
+
 
   postgres:
     image: postgres:17
@@ -28,6 +31,8 @@ services:
       test: ["CMD", "pg_isready", "-q", "-d", "my_db", "-U", "my_user"]
       retries: 3
       timeout: 5s
+    networks:
+      - webapi
 
   redis:
     image: redis:alpine
@@ -41,6 +46,34 @@ services:
       interval: 5s
       timeout: 5s
       retries: 20
+    networks:
+      - webapi
+
+  minio:
+    image: 'minio/minio:latest'
+    ports:
+      - '9000:9000'
+      - '8900:8900'
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    volumes:
+      - './db_data/minio:/data'
+    command: 'minio server /data --console-address ":8900"'
+    healthcheck:
+      test:
+        - CMD
+        - mc
+        - ready
+        - local
+      retries: 3
+      timeout: 5s
+    networks:
+      - webapi
+
+networks:
+  webapi:
+    driver: bridge
   # Uncomment this section if you want to use mongo
   # mongo:
   #   image: mongo:6.0.4-jammy

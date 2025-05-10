@@ -6,9 +6,10 @@ import (
 )
 
 type Repository struct {
-	User  UserRepository
-	Job   JobRepository
-	Media MediaRepository
+	User    UserRepository
+	Job     JobRepository
+	Media   MediaRepository
+	Setting SettingRepository
 }
 
 func NewRepository() *Repository {
@@ -16,8 +17,9 @@ func NewRepository() *Repository {
 	redisClient := rdb.GetRedisClient()
 
 	return &Repository{
-		User:  NewUserRepository(pgxPool, redisClient),
-		Job:   NewJobRepository(pgxPool),
-		Media: NewMediaRepository(pgxPool, redisClient),
+		User:    NewUserRepository(pgxPool, redisClient),
+		Job:     NewJobRepository(pgxPool),
+		Media:   NewMediaRepository(pgxPool, redisClient),
+		Setting: NewSettingRepository(pgxPool, redisClient),
 	}
 }

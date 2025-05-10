@@ -4,6 +4,7 @@ import (
 	"github.com/bytedance/sonic"
 	"github.com/gofiber/contrib/fibersentry"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cache"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/idempotency"
 	"github.com/gofiber/fiber/v2/middleware/recover"
@@ -28,7 +29,7 @@ func NewFiberRouter() *fiber.App {
 	r.Use(requestid.New())
 	r.Use(recover.New())
 	r.Use(idempotency.New())
-	// r.Use(cache.New())
+	r.Use(cache.New())
 	r.Use(middleware.Logger())
 	r.Use(fibersentry.New(fibersentry.Config{
 		Repanic:         true,

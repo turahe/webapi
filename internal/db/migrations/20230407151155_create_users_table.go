@@ -11,7 +11,7 @@ func init() {
 }
 
 var createUserTable = &Migration{
-	Name: "20230407151155_create_user_table",
+	Name: "20230407151155_create_users_table",
 	Up: func() error {
 		_, err := pgx.GetPgxPool().Exec(context.Background(), `
 			CREATE TABLE users (

@@ -5,7 +5,6 @@ import (
 	"webapi/internal/app/user"
 	//model "webapi/internal/db/model"
 	"net/http"
-	dti "webapi/internal/dto"
 	"webapi/internal/http/requests"
 	"webapi/internal/http/response"
 )
@@ -26,7 +25,7 @@ func (h *RegisterHTTPHandler) Register(c *fiber.Ctx) error {
 		})
 	}
 	// Process the business logic
-	dto, err := h.app.CreateUser(c.Context(), dti.CreateUserDTI{
+	dto, err := h.app.CreateUser(c.Context(), requests.CreateUserRequest{
 		UserName: req.UserName,
 		Email:    req.Email,
 		Phone:    req.Phone,

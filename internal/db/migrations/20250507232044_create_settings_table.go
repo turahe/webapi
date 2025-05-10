@@ -11,14 +11,14 @@ func init() {
 }
 
 var createSettingTable = &Migration{
-	Name: "20250507232044_create_setting_table",
+	Name: "20250507232044_create_settings_table",
 	Up: func() error {
 		_, err := pgx.GetPgxPool().Exec(context.Background(), `
 			CREATE TABLE settings (
 				 "id" UUID NOT NULL,
-				"model_type" VARCHAR(255) NOT NULL,
-				"model_id" VARCHAR(255) NOT NULL,
-			    "key" VARCHAR(255) NULL UNIQUE,
+				"model_type" VARCHAR(255) NULL,
+				"model_id" UUID NULL,
+			    "key" VARCHAR(255) NOT NULL,
 			    "value" VARCHAR(255) NULL,
 			    "created_by" UUID NULL,
 			    "updated_by" UUID NULL,

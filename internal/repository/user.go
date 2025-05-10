@@ -3,27 +3,27 @@ package repository
 import (
 	"context"
 	"fmt"
-	"github.com/google/uuid"
-	"time"
-	"webapi/internal/dto"
-
 	"github.com/bytedance/sonic"
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/redis/go-redis/v9"
+	"time"
 	"webapi/internal/db/model"
+	"webapi/internal/dto"
 	"webapi/internal/helper/cache"
+	"webapi/internal/http/requests"
 )
 
 type UserRepository interface {
 	GetUsers(ctx context.Context) ([]model.User, error)
 	AddUser(ctx context.Context, user model.User) (model.User, error)
-	GetUserByID(ctx context.Context, input dto.GetUserDTI) (model.User, error)
+	GetUserByID(ctx context.Context, id uuid.UUID) (model.User, error)
 	GetUserByEmail(ctx context.Context, email string) (model.User, error)
 	GetUserByPhone(ctx context.Context, phone string) (model.User, error)
 	GetUserByUsername(ctx context.Context, username string) (model.User, error)
-	GetUsersWithPagination(ctx context.Context, input dto.DataWithPaginationDTI) (dto.DataWithPaginationDTO, error)
+	GetUsersWithPagination(ctx context.Context, input requests.DataWithPaginationRequest) (dto.DataWithPaginationDTO, error)
 	UpdateUser(ctx context.Context, user model.User) (model.User, error)
-	DeleteUser(ctx context.Context, input dto.GetUserDTI) (bool, error)
+	DeleteUser(ctx context.Context, id uuid.UUID) (bool, error)
 	IsUserEmailExist(ctx context.Context, email string) (bool, error)
 	IsUserPhoneExist(ctx context.Context, phone string) (bool, error)
 	SearchUser(ctx context.Context, query string) ([]model.User, error)
@@ -106,9 +106,9 @@ func (u *UserRepositoryImpl) SearchUser(ctx context.Context, query string) ([]mo
 	return users, nil
 }
 
-func (u *UserRepositoryImpl) GetUserByID(ctx context.Context, input dto.GetUserDTI) (model.User, error) {
+func (u *UserRepositoryImpl) GetUserByID(ctx context.Context, id uuid.UUID) (model.User, error) {
 	var userModel model.User
-	err := u.pgxPool.QueryRow(ctx, "SELECT id, username, email, phone FROM users WHERE id = $1 AND deleted_at IS NULL ", input.ID).
+	err := u.pgxPool.QueryRow(ctx, "SELECT id, username, email, phone FROM users WHERE id = $1 AND deleted_at IS NULL ", id).
 		Scan(&userModel.ID, &userModel.UserName, &userModel.Email, &userModel.Phone)
 	if err != nil {
 		return model.User{}, err
@@ -116,7 +116,7 @@ func (u *UserRepositoryImpl) GetUserByID(ctx context.Context, input dto.GetUserD
 	return userModel, nil
 }
 
-func (u *UserRepositoryImpl) GetUsersWithPagination(ctx context.Context, input dto.DataWithPaginationDTI) (dto.DataWithPaginationDTO, error) {
+func (u *UserRepositoryImpl) GetUsersWithPagination(ctx context.Context, input requests.DataWithPaginationRequest) (dto.DataWithPaginationDTO, error) {
 	var users []model.User
 	var totalUsers int
 	var query = input.Query
@@ -182,6 +182,11 @@ func (u *UserRepositoryImpl) GetUsersWithPagination(ctx context.Context, input d
 
 // Add user with transaction and return id
 func (u *UserRepositoryImpl) AddUser(ctx context.Context, user model.User) (model.User, error) {
+	var settings = map[string]string{
+		"language": "Indonesia",
+		"timezone": "Asia/Jakarta",
+	}
+
 	tx, err := u.pgxPool.Begin(ctx)
 	if err != nil {
 		return model.User{}, err
@@ -190,6 +195,15 @@ func (u *UserRepositoryImpl) AddUser(ctx context.Context, user model.User) (mode
 
 	err = tx.QueryRow(ctx, "INSERT INTO users (id, username, email, phone, password) VALUES ($1, $2, $3, $4, $5) RETURNING id, username, email, phone, password, created_at, updated_at", uuid.New(), user.UserName, user.Email, user.Phone, user.Password).
 		Scan(&user.ID, &user.UserName, &user.Email, &user.Phone, &user.Password, &user.CreatedAt, &user.UpdatedAt)
+
+	for key, value := range settings {
+		// Insert default settings for the new user
+		_, err = tx.Exec(ctx, "INSERT INTO settings (id, model_type, model_id, key, value) VALUES ($1, $2, $3, $4, $5)", uuid.New(), "user", user.ID, key, value)
+		if err != nil {
+			return model.User{}, err
+		}
+
+	}
 	if err != nil {
 		return model.User{}, err
 	}
@@ -266,14 +280,14 @@ func (u *UserRepositoryImpl) GetUserByUsername(ctx context.Context, username str
 	return userModel, nil
 }
 
-func (u *UserRepositoryImpl) DeleteUser(ctx context.Context, input dto.GetUserDTI) (bool, error) {
+func (u *UserRepositoryImpl) DeleteUser(ctx context.Context, id uuid.UUID) (bool, error) {
 	tx, err := u.pgxPool.Begin(ctx)
 	if err != nil {
 		return false, err
 	}
 	defer tx.Rollback(ctx)
 
-	_, err = tx.Exec(ctx, "UPDATE users SET deleted_at = NOW() WHERE id = $1", input.ID)
+	_, err = tx.Exec(ctx, "UPDATE users SET deleted_at = NOW() WHERE id = $1", id)
 	if err != nil {
 		return false, err
 	}
