@@ -37,8 +37,8 @@ func TestGetUsers(t *testing.T) {
 
 			resp.Status(tt.expectedStatusCode)
 			resp.JSON().Schema(tt.expectedSchema)
-			resp.JSON().Object().Value("response_code").IsEqual(tt.expectedCode)
-			resp.JSON().Object().Value("response_message").IsEqual(tt.expectedMessage)
+			resp.JSON().Object().Value("code").IsEqual(tt.expectedCode)
+			resp.JSON().Object().Value("message").IsEqual(tt.expectedMessage)
 
 		})
 	}
@@ -69,16 +69,18 @@ func TestGetUserByID(t *testing.T) {
 
 			resp.Status(tt.expectedStatusCode)
 			resp.JSON().Schema(tt.expectedSchema)
-			resp.JSON().Object().Value("response_code").IsEqual(tt.expectedCode)
-			resp.JSON().Object().Value("response_message").IsEqual(tt.expectedMessage)
+			resp.JSON().Object().Value("code").IsEqual(tt.expectedCode)
+			resp.JSON().Object().Value("message").IsEqual(tt.expectedMessage)
 		})
 	}
 }
 
 func TestCreateUser(t *testing.T) {
 	newAccount := map[string]interface{}{
-		"name":  gofakeit.Name(),
-		"email": gofakeit.Email(),
+		"username": gofakeit.Name(),
+		"email":    gofakeit.Email(),
+		"phone":    gofakeit.Phone(),
+		"password": "secret1234",
 	}
 	tests := []struct {
 		name               string
@@ -135,8 +137,8 @@ func TestCreateUser(t *testing.T) {
 
 			resp.Status(tt.expectedStatusCode)
 			resp.JSON().Schema(tt.expectedSchema)
-			resp.JSON().Object().Value("response_code").IsEqual(tt.expectedCode)
-			resp.JSON().Object().Value("response_message").IsEqual(tt.expectedMessage)
+			resp.JSON().Object().Value("code").IsEqual(tt.expectedCode)
+			resp.JSON().Object().Value("message").IsEqual(tt.expectedMessage)
 
 		})
 	}

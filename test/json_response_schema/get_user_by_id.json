@@ -1,10 +1,10 @@
 {
     "type": "object",
     "properties": {
-        "response_code": {
+        "code": {
             "type": "number"
         },
-        "response_message": {
+        "message": {
             "type": "string"
         },
         "data": {
@@ -13,23 +13,27 @@
                 "id": {
                     "type": "string"
                 },
-                "name": {
+                "username": {
                     "type": "string"
                 },
                 "email": {
+                    "type": "string"
+                },
+                "phone": {
                     "type": "string"
                 }
             },
             "required": [
                 "id",
-                "name",
-                "email"
+                "username",
+                "email",
+                "phone"
             ]
         }
     },
     "required": [
-        "response_code",
-        "response_message",
+        "code",
+        "message",
         "data"
     ]
 }

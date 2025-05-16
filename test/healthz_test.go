@@ -22,7 +22,7 @@ func TestHealthz(t *testing.T) {
 			body:               "",
 			expectedStatusCode: http.StatusOK,
 			expectedSchema:     readJSONToString(t, "json_response_schema/get_healthz.json"),
-			expectedCode:       0,
+			expectedCode:       http.StatusOK,
 			expectedMessage:    "OK",
 		},
 	}
@@ -35,8 +35,8 @@ func TestHealthz(t *testing.T) {
 
 			resp.Status(tt.expectedStatusCode)
 			resp.JSON().Schema(tt.expectedSchema)
-			resp.JSON().Object().Value("response_code").IsEqual(tt.expectedCode)
-			resp.JSON().Object().Value("response_message").IsEqual(tt.expectedMessage)
+			resp.JSON().Object().Value("code").IsEqual(tt.expectedCode)
+			resp.JSON().Object().Value("message").IsEqual(tt.expectedMessage)
 
 		})
 	}
