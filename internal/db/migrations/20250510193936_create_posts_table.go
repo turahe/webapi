@@ -14,7 +14,7 @@ var createPostTable = &Migration{
 	Name: "20250510193936_create_posts_table",
 	Up: func() error {
 		_, err := pgx.GetPgxPool().Exec(context.Background(), `
-			CREATE TABLE posts (
+			CREATE TABLE IF NOT EXISTS posts (
 			    "id" UUID NOT NULL PRIMARY KEY,
 			    "slug" varchar(255) NOT NULL UNIQUE,
 			    "title" varchar(255) NOT NULL,
@@ -34,8 +34,8 @@ var createPostTable = &Migration{
 			    "updated_at" TIMESTAMP DEFAULT NOW(),
 			    CONSTRAINT "posts_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "users" ("id") ON DELETE SET NULL ON UPDATE NO ACTION,
 			    CONSTRAINT "posts_deleted_by_foreign" FOREIGN KEY ("deleted_by") REFERENCES "users" ("id") ON DELETE SET NULL ON UPDATE NO ACTION,
-			    CONSTRAINT "posts_updated_by_foreign" FOREIGN KEY ("updated_by") REFERENCES "users" ("id") ON DELETE SET NULL ON UPDATE NO ACTION,
-			                     );
+			    CONSTRAINT "posts_updated_by_foreign" FOREIGN KEY ("updated_by") REFERENCES "users" ("id") ON DELETE SET NULL ON UPDATE NO ACTION
+			);
 		`)
 
 		if err != nil {
@@ -46,7 +46,7 @@ var createPostTable = &Migration{
 	},
 	Down: func() error {
 		_, err := pgx.GetPgxPool().Exec(context.Background(), `
-			DROP TABLE IF EXISTS posts
+			DROP TABLE IF EXISTS posts;
 		`)
 		if err != nil {
 			return err

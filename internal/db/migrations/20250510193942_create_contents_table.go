@@ -14,8 +14,8 @@ var createContentTable = &Migration{
 	Name: "20250510193942_create_contents_table",
 	Up: func() error {
 		_, err := pgx.GetPgxPool().Exec(context.Background(), `
-			CREATE TABLE contents (
-			    "id" UUID NOT NULL PRIMARY KEY,
+			CREATE TABLE IF NOT EXISTS contents (
+			    "id" UUID NOT NULL,
 			    "model_type" varchar(255) NOT NULL,
 			    "model_id" UUID NOT NULL,
 			    "content_raw" text NOT NULL,
@@ -26,10 +26,11 @@ var createContentTable = &Migration{
 			    "deleted_at" TIMESTAMP NULL,
 			    "created_at" TIMESTAMP DEFAULT NOW(),
 			    "updated_at" TIMESTAMP DEFAULT NOW(),
+			    CONSTRAINT "contents_pkey" PRIMARY KEY ("id"),
 			    CONSTRAINT "contents_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "users" ("id") ON DELETE SET NULL ON UPDATE NO ACTION,
 			    CONSTRAINT "contents_deleted_by_foreign" FOREIGN KEY ("deleted_by") REFERENCES "users" ("id") ON DELETE SET NULL ON UPDATE NO ACTION,
 			    CONSTRAINT "contents_updated_by_foreign" FOREIGN KEY ("updated_by") REFERENCES "users" ("id") ON DELETE SET NULL ON UPDATE NO ACTION
-			                        );
+			);
 		`)
 
 		if err != nil {
@@ -40,7 +41,7 @@ var createContentTable = &Migration{
 	},
 	Down: func() error {
 		_, err := pgx.GetPgxPool().Exec(context.Background(), `
-			DROP TABLE IF EXISTS contents
+			DROP TABLE IF EXISTS contents;
 		`)
 		if err != nil {
 			return err

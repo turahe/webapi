@@ -14,7 +14,7 @@ var createMediaTable = &Migration{
 	Name: "20250507232036_create_media_table",
 	Up: func() error {
 		_, err := pgx.GetPgxPool().Exec(context.Background(), `
-			CREATE TABLE "media" (
+			CREATE TABLE IF NOT EXISTS media (
 			    "id" UUID NOT NULL,
 			    "name" varchar(255)  NOT NULL,
 			    "hash" varchar(255),
@@ -38,14 +38,14 @@ var createMediaTable = &Migration{
 			    CONSTRAINT "media_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "users" ("id") ON DELETE SET NULL ON UPDATE NO ACTION,
 			    CONSTRAINT "media_deleted_by_foreign" FOREIGN KEY ("deleted_by") REFERENCES "users" ("id") ON DELETE SET NULL ON UPDATE NO ACTION,
 			    CONSTRAINT "media_updated_by_foreign" FOREIGN KEY ("updated_by") REFERENCES "users" ("id") ON DELETE SET NULL ON UPDATE NO ACTION
-			                     );
+			);
 			
-			CREATE TABLE"mediables" (
+			CREATE TABLE IF NOT EXISTS mediables (
 			    "media_id" UUID NOT NULL,
 			    "mediable_id" UUID NOT NULL,
 			    "mediable_type" varchar(255)  NOT NULL,
 			    "group" varchar(255)  NOT NULL
-			                        );
+			);
 		`)
 
 		if err != nil {

@@ -14,9 +14,9 @@ var createUserTable = &Migration{
 	Name: "20230407151155_create_users_table",
 	Up: func() error {
 		_, err := pgx.GetPgxPool().Exec(context.Background(), `
-			CREATE TABLE users (
+			CREATE TABLE IF NOT EXISTS users (
 				"id" UUID NOT NULL,
-				"username" VARCHAR(255) NOT NULL,
+				"username" VARCHAR(255) NOT NULL UNIQUE,
 				"email" VARCHAR(255) NOT NULL UNIQUE,
 			    "phone" VARCHAR(255) NULL UNIQUE,
 			    "password" VARCHAR(255) NULL,
